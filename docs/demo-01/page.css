@@ -1,0 +1,21 @@
+/*
+ * page.css
+ * Grundstile fuer alle Webseiten
+ */ 
+
+
+h1, h2, h3, h4, h5 { color : navy }
+
+li {
+	font-family : "Calibri", "Arial", "Sans-Serif" ;
+	color: green;
+}
+
+ul.alarm li {
+	color : red ;
+	}
+p { 
+	font-family : "Calibri", "Arial", "Sans-Serif" ;
+	color: red;
+}
+

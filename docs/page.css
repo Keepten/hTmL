@@ -1,0 +1,35 @@
+/*
+ * page.css
+ * Grundstile fuer alle Webseiten
+ */ 
+
+body { 
+	font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif ; 
+	line-height : 150% ;
+	padding-left : 40px ;
+	padding-right : 20px ;
+	padding-bottom : 40px ;
+	}
+
+dd+dt { margin-top : 15px }
+
+h1, h2, h3, h4, h5 { 
+	color : navy ;
+	margin-left : -20px ;
+	}
+
+li {
+	margin-top : 5px ;
+	margin-bottom : 5px ;
+	}
+
+pre { 
+	border : 1px solid silver ; 
+	padding : 10px 10px ;
+	font-family : "Courier New", Courier, monospace ;
+	font-size : 80% ;
+	line-height : 120% ;
+	overflow-x : auto ;
+	}
+
+

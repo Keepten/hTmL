@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-10-29" />
+<meta name="version" content="2" />
+<meta name="description" content="HTML" />
+
+<link rel="stylesheet" href="page.css" />
+ 
+<title>HTML</title>
+
+</head><body>
+
+<nav><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></nav>
+
+<h1>HTML</h1>
+
+<p>Eine Web-Seite besteht im Prinzip aus 3 Komponenten:</p>
+
+<ol>
+<li>Inhalt (Content) in HTML</li>
+<li>Visueller Gestaltung, (Style Rules) in CSS</li>
+<li>Funktionalität (Programme, Skripte) in JavaScript</li>
+</ol>
+
+<p>Traditionell werden Inhalt, Gestaltung und Funktionalität getrennt und von unterschiedlichen Spezialisten erstellt und gewartet. Autoren erstellen Content in HTML, Designer erstellen visuelle Styles in CSS, Programmierer erstellen Scripte in JavaScript. Alle 3 Komponenten können in einer einzigen (HTML) Datei gespeichert werden, aber es empfiehlt sich aus verschiedenen Gründen, sie auf separate Dateien zu verteilen:</p>
+
+<ul>
+<li>Wiederverwendbarkeit: Fast alle Style Rules werden auf allen Seiten verwendet. Viele Funktionen ebenso. CSS und JavaScript in einer HTML-Datei lässen sich nicht wiederverwenden.</li>
+<li>Reduktion des Wartungsaufwandes: Wird Code oder eine Style Rule geändert, muss die Änderung nur in einer einzigen Datei durchgeführt werden, und nicht in vielen einzelnen Seiten.</li>
+<li>Reduktion des Testaufwandes vor der Veröffentlichung: Nicht geänderte Dateien müssen nicht getestet werden. </li>
+</ul>
+
+<p>Content ist im Allgemeinen der Text und seine inhaltliche Struktur (Kapitel, Absätze, Listen, Tabellen, etc.). CSS und Scripte sind optional; eine Webseite kann aus HTML ohne CSS und JavaScript ist vollkommen okay, daher beginnen wir mit einem Subset von HTML. </p>
+
+<h2>Tags</h2><div>
+
+<p>HTML-Dokumente sind ein Konglomerat aus <tt>HTML-Elementen</tt>, deren Struktur aus XML übernommen wurde. Fast alle HTML-Elemente bestehen aus <tt>Start Tag</tt>, Inhalt (Content) und <tt>End Tag</tt>:</p>
+
+<pre>
+&lt;tag-name&gt;content&lt;/tag-name&gt;
+</pre>
+
+<p>Beispiele:</p>
+
+<pre>
+&lt;p&gt;Absatz (Paragraph)&lt;/p&gt;
+&lt;h1&gt;Überschrift (Heading) erster Ordnung&lt;/p&gt;
+&lt;pre&gt;Vorformatierter (pre-formatted) Text&lt;/p&gt;
+</pre>
+
+<p>Beim Start-Tag folgt der Tag-Name unmittelbar auf die linke, öffnende, spitze Klammer, ohne Leerzeichen dazwischen. Beim Start-Tag wird noch ein Schrägstrich vorwärts eingeschoben.</p>
+<p>Ein Start-Tag muss immer ein korrespondieres End-Tag gleichen Namens haben. Man könnte die Tags auch als öffnende und schließende "Klammer" interpretieren.</p>
+
+<p>Ganz falsch ist es, das End-Tag fort zu lassen und das Start-Tag als "Formatierungskommando" zu missbrauchen:</p>
+
+<pre>
+&lt;p&gt;Erster Absatz
+&lt;p&gt;Zweiter Absatz
+&lt;p&gt;Drittter Absatz
+</pre>
+
+<p>Ein HTML ist ein <em>Container</em>, der geöffnet und geschlossen werden muss. Das obige Beispiel wird möglicherweise im Browser dargestellt wie drei aufeinander folgende Absätze, tatsächlich aber sind die Absätze ineinander <em>verschachtelt</em>, und es fehlten die jeweiligen End-Tags.</p>
+
+<p>Ganz wichtig: Tags (wie reale Container) dürfen sich nicht überlappen:</p>
+
+<pre>normal &lt;b&gt;fett, &lt;i&gt;fett-kursiv&lt;/b&gt; kursiv&lt;/i&gt;</pre>
+
+<p>Korrekt muss es so geschrieben werden:</p>
+
+<pre>normal &lt;b&gt;fett &lt;i&gt;fett-kursiv&lt;/i&gt;&lt;/b&gt; &lt;i&gt;kursiv&lt;/i&gt;</pre>
+
+<p>Ein (realer) Container darf (kleinere) Container enthalten, so dürfen HTML Container-Elemente andere HTML Elemente enthalten.</p>
+
+<!--h2--></div>
+
+<h2>Elemente ohne Inhalt</h2><div>
+
+<p>Einige HTML-Elemente dürfen keinen Inhalt (Content) besitzen; sie können (müssen?) in verkürzter Form geschrieben werden:</p>
+
+<pre>
+&lt;tag-name /&gt;
+&lt;tag-name/&gt;
+</pre>
+
+<!--h2--></div>
+
+<h2>Attribute</h2><div>
+
+<p>Alle HTML-Elemente könnten mit einem oder mehreren <em>Attributen</em> für verschiedene Zwecke versehen werden; sie haben die Form</p>
+
+<pre>
+attribut-name="attribut-wert"
+</pre>
+
+<p>Zuweisungsoperator (=) und Wertangabe sind optional. Tag-Name und Attribute werden durch Leerzeichen getrennt:</p>
+
+<pre>
+&lt;button disabled="true"&gt;OK&lt;/button&gt;
+&lt;ul id="search-result-list" status="empty"&gt;&lt;/ul&gt;
+</pre>
+
+<p>Attribut-Werte sind immer Zeichenketten, numerische Werte gibt es nicht. Braucht man das numerische Äquivalent in einem Script (zum Rechnen), muss die Zeichenkette explizit konvertiert werden, etwa mit der <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt"><tt>parseInt()</tt></a>-Funktion.</p>
+
+<p>Attribut-Namen, wie Tag-Namen, werden konventionell klein geschrieben. Attributwerte werden oft klein geschrieben und gerne mit Bindestrichen strukturiert, aber auch CamelCase Formatierung ist verbreitet:</p>
+
+<pre>
+&lt;ul id="SearchResultList" status="QuerySyntaxError"&gt;&lt;/ul&gt;
+</pre>
+
+<p>Es gibt vordefinierte Attribute, die von Script-Funktionen direkt unterstützt werden. Etwa</p>
+
+<ul>
+<li><tt>id</tt> &mdash; (vorzugsweise) eindeutige Identifikation von HTML Elementen</li>
+<li><tt>name</tt> &mdash; (potentiell) mehrdeutige Identifikation von Elementen, oder Zuordnung von <tt>INPUT</tt> Elementen zu Backend-Datenbankfeldern.</li>
+<li><tt>style</tt> &mdash; inline-CSS Anweisungen zur Formatierung einzelner HTML-Elemente.</li>
+<li><tt>href</tt> &mdash; URL bei Hypertext Link-Elementen (A)</li>
+<li><tt>src</tt> &mdash; URL bei Image-Elementen (IMG) und Script-Elementend (SCRIPT)</li>
+<li><tt>class</tt> &mdash; wird für die Selektion von CSS Rules, also für die Formatierung, genutzt.</li>
+</ul>
+
+<p>Benutzerdefinierte Attribut-Namen sollten mindestens einen Bindestrich enthalten, aber der Browser schluckt alles.</p>
+
+<!--h2--></div>
+
+<h2>Cheat Sheet: Die wichtigsten HTML Elemente</h2><div>
+
+<dl>
+<dt>HTML</dt>
+<dd>Dies ist das Root-Element des Dokumentes. Umschließt den gesamten Inhalt. Ausserhalb dieses Elements darf kein HTML Code stehen.</dd>
+
+<dt>HEAD</dt>
+<dd>Kopfbereich, enthält Metadaten und Anweisungen für Browser und Informationen für Suchmaschinen, sowie Informationen für Wartung und Verwaltung der Datei (Autor, Versionsnummer, Änderungsdatum usw.)</dd>
+
+<dt>BODY</dt>
+<dd>Umschließt den kompletten Inhalt (Content) des Dokumentes.</dd>
+
+<dt>H1 bis H5</dt>
+<dd>Überschrift (Heading) erster bis fünfter Ordnung</dd>
+
+<dt>P</dt>
+<dd>Absatz (Paragraph)</dd>
+
+<dt>BR</dt>
+<dd>Erzwingt einen Zeilenumbruch innerhalb eines Absatzes, sollte nicht zur "Erzeugung" eines Absatzes missbraucht werden, auch wenn es vom Browser in ähnlicher Weise wie ein Absatz formatiert wird. Ist eine leeres HTML-Element, wird also nur in Kurzform geschrieben (<tt>&lt;br/&gt;</tt>). Wird nur in Ausnahmefällen verwendet.</dd>
+
+<dt>EM</dt>
+<dd>Hervorhebung, Betonung (Emphasis). Wird von den meisten Browsern in Kursivschrift umgesetzt.</dd>
+
+<dt>STRONG</dt>
+<dd>Starke Hervorhebung (Strong Emphasis). Wird von den meisten Browsern in Fettschrift umgesetzt.</dd>
+
+<dt>UL</dt>
+<dd>Aufzählungsliste mit Bullets (Unordered List). Enthält LI-Elemente.</dd>
+
+<dt>OL</dt>
+<dd>Nummerierte Liste (Ordered List). Enthält LI-Elemente.</dd>
+
+<dt>LI</dt>
+<dd>Listenelement, Eintrag (List Item), enthalten in UL und OL Elementen.</dd>
+
+<dt>DL</dt>
+<dd>Beschreibungsliste (Description List). Wird gerne für Glossare (wie zum Beispiel genau diese Liste) verwendet.</dd>
+
+<dt>DT</dt>
+<dd>Beschreibungstitel (Description Title), Titel eines Eintrags in einer Description List DL.</dd>
+
+<dt>DD</dt>
+<dd>Beschreibungstext (Description Data) für einen Beschreibungstitel DT.</dd>
+<dd>Einem DT können mehrere DDs folgen.</dd>
+
+<dt>PRE</dt>
+<dd>Vorformatierter Text, wird nicht umgebrochen. Wird oft für Programm-Listings und Syntax-Beschreibungen verwendet.</dd>
+
+<dt>DIV</dt>
+<dd>Ein "Container" für andere HTML Elemente. Wird benutzt, um HTML Elemente zu gruppieren und ihnen einen gemeinsamen Rand und/oder Scrollbalken zu geben. Wird auch verwendet, um längere Texte zu einem logischen Block zusammen zu fassen. Einige Texteditoren können Block-Elemente kollabieren und expandieren; auf diese Weise kann man in einem langen Dokument die Übersicht behalten. In diesem Tutorial werden zu diesem Zweck die auf eine Überschrift folgenden Inhalte in ein DIV Element eingeschlossen:</dd>
+
+<dd><pre>
+&lt;h2&gt;Überschrift&lt;/h2&gt;&lt;div&gt;
+&lt;p&gt;Etwas Text&lt;/p&gt;
+&emsp;&hellip;
+&lt;p&gt;Etwas Text&lt;/p&gt;
+&lt;/div&gt;
+</pre></dd>
+
+<dt>TABLE</dt>
+<dd>Tabelle. Enthält THEAD und TBODY.</dd>
+
+<dt>THEAD</dt>
+<dd>Tabellenkopf (Table Head). Enthält üblicherweise TR-Elemente für Kopfzeilen, Spaltenheadings.</dd>
+
+<dt>TBODY</dt>
+<dd>Datenbereich (Table Body). Enthält TR-Elemente.</dd>
+
+<dt>TFOOT</dt>
+<dd>Tabellenfuß (Table Footer). Enthält TR-Elemente.</dd>
+
+<dt>TR</dt>
+<dd>Zeilenelement (Table Row). Enthält TH und/oder TD-Elemente.</dd>
+
+<dt>TH</dt>
+<dd>Kopfzelle (Table Heading Cell). Für Spalten- uns Zeilenüberschriften. Wird automatisch fett formatiert, wenn keine andere CSS Rule definiert wurde.</dd>
+
+<dt>TD</dt>
+<dd>Datenzelle (Table Data Cell). Enthält die eigentlichen Tabellendaten.</dd>
+
+<dt>IMG</dt>
+<dd>Bild-Element (Image). Für JPGs, BMPs (igitt), GIFs (bäh!), PNG (aaaah!), SVGs (woah!) und viele andere Bildformate. Im SRC-Attribut wird die URL der Resource eingetragen.</dd>
+
+<dt>OBJECT</dt>
+<dd>Ist etwas aus der Mode gekommen, wird aber gerne für SVG-Images verwendet und erlaubt einen Zugriff auf individuelle SVG Elemente zwecks Manipulations und Styling.</dd>
+
+<dt>LINK</dt>
+<dd>Dient unter anderem zur Einbindung von Cascading Style Sheet (CSS)-Dateien.</dd>
+
+<dt>SCRIPT</dt>
+<dd>Dient zur Einbindung von Script-Dateien.</dd>
+</dl>
+
+<!--h2--></div>
+
+<footer><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

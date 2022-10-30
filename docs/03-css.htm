@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-10-17" />
+<meta name="version" content="1" />
+<meta name="description" content="CSS Primer" />
+
+<link rel="stylesheet" href="page.css" />
+
+<style>
+dd.demo div { display : inline-block ; padding : 5px ; margin : 10px 0px }
+dd.see-also { margin-top : 20px }
+</style>
+ 
+<title>CSS</title>
+
+</head><body>
+
+<nav><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></nav>
+
+<h1>CSS</h1>
+
+<p>Wenn HTML den Inhalt und seine Struktur definiert, definiert CSS das Design (Schriftarten, Farben, Formatierung, Abstände, Textausrichtung, automatischen Zeilenumbruch, Sichtbarkeit, Rahmen, Schatten, Transformationen, Bewegungen, Animationen, und vieles mehr. CSS steht für "Cascading Style Sheets".</p>
+
+<p>CSS Code besteht aus einer Liste von "Regeln", den CSS Rules. Eine Rule definiert, welche HTML elemente betroffen ("formatiert") werden, und wie.</p>
+
+<p>CSS Rules bindet man vorzugsweise mit einem HTML LINK-Element in eine HTML-Datei ein:</p>
+
+<pre>
+&lt;link rel="stylesheet" href="path/to/the/file.css" /&gt;
+</pre>
+
+<p>Spezielle CSS-Rules, die nur in einer einzigen HTML-Datei verwendet werden, können auch in einem HTML STYLE element definiert werden. Etwa so:</p>
+
+<pre>
+&lt;html&gt;&lt;head&gt;
+
+&lt;style&gt;
+h1, h2, h3, h4, h5 { color : cornflowerblue }
+h4, h5 { font-style : italic }
+&lt;/style&gt;
+
+&lt;/head&gt;&lt;body&gt;
+&hellip;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+
+<h2>CSS Formatierungsregeln</h2><div>
+
+<p>Eine CSS Regel (Rule) besteht aus einem <em>Selektor</em> und einer Zuweisungsliste:</p>
+
+<pre>
+selector { zuweisung ; zuweisung ; ... }
+</pre>
+
+<p>Der Selektor "filtert" die HTML Elemente aus, auf die die Zuweisungsliste angewandt werden soll.</p>
+
+<p>Beispiel:</p>
+
+<pre>
+p { font-family : "Times New Roman" }
+h1, h2, h3, h4, h5 { color : cornflowerblue ; font-family : Arial, Calibri, Sans-Serif }
+</pre>
+
+<p>Das "p" filtert alle Paragraph-Element im Dokument aus. Ihr <tt>font-family</tt>-Attribut wird auf "Times New Roman" gesetzt. Anders ausgedrückt, die Schriftart für Absätze wird auf Times New Roman festgelegt.</p>
+
+<p>Enthält ein Attributwert Leerzeichen wie etwa "Times New Roman", muss er in (einfache oder doppelte) Anführungszeichen gesetzt werden.</p>
+
+<p>In der zweiten Zeile werden mehrere Selektoren aufgelistet. Sie filtern die Überschriften H1 bis H5 aus. Für sie wird die Schriftfarbe blau und der Font "Arial" festgelegt, alternativ Calibri oder Sans-Serif, falls Arial auf dem System nicht verfügbar ist.</p>
+
+<p>Mehrere Zuweisungsangaben werden durch Semikolon getrennt. Mehrere Wertangaben werden durch Komma oder Leerzeichen getrennt:</p>
+
+<pre>img { margin : 10px 20px 10px 20px }</pre>
+
+<p>Die obige CSS-Regel legt die Abstände um die IMG elemente fest, in der Reihenfolge oben, rechts, unten und links.</p>
+
+<p>Einige Wertangaben benötigen eine Einheit. Im obigen Beispiel wird die Einheit "Pixel" verwendet. Die Einheit darf nicht durch Leerzeichen vom Wert getrennt werden.</p>
+
+<!--h2--></div>
+
+<h2>Häufig benutzte Attribute</h2><div>
+
+<p>Jedes HTML-Element bringt von Haus aus eine Unmenge von Attributen mit, die sein Aussehen und Verhalten bestimmen. Es ist sinnvoll, mit einem kleinen Satz von Attributen zu beginnen, und regelmäßig die Dokumentation der HTML-Element nach interessanten neuen Attributen zu durchforsten und auszuprobieren. Inkrementelles Lernen, sozusagen. </p>
+
+<p>Die folgende Liste ist grob unvollständig &mdash; mit Absicht. Sie soll durch dich selbst ständig erweitert werden, in genau diesem Dokument.</p>
+
+<dl>
+<dt>Border</dt>
+<dd>Viele, wenn nicht alle, HTML-Elemente haben eine Umrandung (Border), deren Stärke (Breite), Farbe (Color) und Muster (Style) man setzen kann. Beispiele:</dd>
+<dd class="demo"><div style="border: 1px solid silver">border: 1px solid silver</div></dd>
+<dd class="demo"><div style="border: 3px darkorange dotted">border: 3px darkorange dotted</div></dd>
+<dd class="demo"><div style="border-left: 3px darkorange dashed">border-left: 3px darkorange dashed</div></dd>
+<dd class="demo"><div style="border-bottom: 5px double blue">border-bottom: 1px double blue</div></dd>
+<dd>Eine Breite von 0 oder 0px lässt den Rand verschwinden. Besser aber ist es, den <tt>border-style=none</tt> zu setzen.</dd>
+<dd class="see-also">Siehe auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-style">border-style</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-width">border-width</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-color">border-color</a>.</dd>
+
+<dt>Margin</dt>
+<dd><tt>Margin</tt> ist der Abstand zu anderen HTML Elementen, oben, rechts, unten und links. Beispiele:</dd>
+<dd class="demo"><div style="border: 1px solid silver ; margin-right:10px">style="margin-right:10px"</div><div style="border: 1px solid silver ; margin-left:2cm">style="margin-right:2cm"</div></dd>
+<dd>Wichtig: Der Margin zwischen 2 benachbarten Elementen wird <em>nicht addiert</em>, sondern <em>verschmolzen</em>. Der Abstand wird durch den größeren Wert bestimmt.</dd>
+<dd>Die Werte können in verschiedenen Einheiten angegeben werden. Üblich sind Pixel (px), Point (pt), Zentimeter (cm) und Inch (in). Auch relative Angaben in Prozent (%) können gemacht werden, Bezugsgröße ist wohl die Seitenbreite.</dd>
+<dd class="see-also">Siech auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">Margin</a>.</dd>
+
+<dt>Padding</dt>
+<dd><tt>Padding</tt> ist der Abstand zwischen Rahmen und Content. Syntax ist wie bei <tt>Margin</tt>.</dd>
+<dd class="see-also">Siech auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding">Padding</a>.</dd>
+
+<dt>Color</dt>
+<dd>Textfarbe. Wertangabe als Web Color Name ("darkorange"), RGB hexadezimal dreistellig (#CCC), RGB hexadezimal sechsstellig (#C0B088), oder dezimal als RGB(128,0,255).</dd>
+<dd>Siehe auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color">Color</a></dd>
+
+<dt>Background Color</dt>
+<dd>Hintergrundfarbe. Werte wie bei <tt>Color</tt>.</dd>
+<dd>Siehe auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-color">Background Color</a></dd>
+
+<dt>Font Family</dt>
+<dd>Das <tt>font-family</tt>-Attribut legt die Schriftart eines HTML Elementes fest. Es können mehrere Schriftarten angegeben werden. Wird die erste Schriftart im System nicht gefunden, wird die nächste versucht. Und soweiter.</dd>
+<dd>Schriftarten enthalten oft Leerzeichen. In diesem Fall muss man den Namen in einfache oder doppelte Hochkommata setzen.</dd>
+<dd>Siehe auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">Font Family</a></dd>
+
+<dt>Font Size</dt>
+<dd>Das <tt>font-size</tt>-Attribut legt die Schriftgröße für HTML Elemente fest. Es muss eine Maßeinheit angegeben werden. Oft verwendet werden Point (pt), Pixel (px), Inch (in) und Zentimeter (cm).</dd>
+<dd>Siehe auch: MDN <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size">Font Size</a></dd>
+</dl>
+
+<!--h2--></div>
+
+<footer><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>
