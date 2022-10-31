@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-10-31" />
+<meta name="version" content="1" />
+<meta name="description" content="Web-Programmierung ruht auf 4 Technonolgie-Säulen: HTML, CSS, JavaScript und SVG." />
+
+<link rel="stylesheet" href="page.css" />
+
+<style>
+</style>
+ 
+<title>Einführung in die Web Programmierung</title>
+
+</head><body>
+
+<nav><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></nav>
+
+<h1>Einführung in die Web Programmierung</h1>
+
+<p>Web-Programmierung ruht auf 3 Technonolgie-Säulen: HTML, CSS und JavaScript. Die Idee dahinter ist die prinzipielle Trennung zwischen Inhalt (Text und Struktur, "Content"), Presentation (visuelle Gestaltung, "Design") und Funktionalität (Programmcode, "Behavior"). Diese Trennung vollzieht sich durch Verteilung einer Implementation auf mehrere Dateien. Trotzdem gibt es logische Beziehungen zwischen den verschiedenen Teilen. Sie werden durch <em>Links</em> in der HTML-Datei realisiert, die sozusagen alles zusammenhält.</p>
+
+<p>Das mag auf den ersten Blick umständlich und verwirrend erscheinen. In einer integrierten Entwicklungsumgebung wie Visual Studio oder Eclipse und Programmiersprachen wie C++, C#, Visual Basic usw. stellt man das GUI eines Programms visuell aus einer Toolbox zusammen, ein Doppelklick auf ein Steuerelement öffnet den Texteditor und man kann sofort die Logik implementieren. GUI und Code bilden eine mehr oder weniger zusammenhängende Einheit. Was zusammengehört, steht auch zusammen, und basta.</p>
+
+<p>So habe ich auch mal angefangen. Die nicht sofort offensichtlichen Nachteile merkt man erst sehr spät:</p>
+
+<ul>
+<li>Die Programmlogik ist <em>eng verwoben</em> mit dem GUI.</li>
+<li>Die Programmlogik ist über große Teile des GUIs <em>verteilt</em>.</li>
+<li>Viele kleine Teile der Programmlogik wurden mehr oder weniger <em>unbemerkt dupliziert</em>.</li>
+<li>Die Programmlogik kann <em>nicht automatisiert getestet</em> werden.</li>
+<li>Unterstützung für mehrere Betriebssysteme ist schwierig und teuer.</li>
+<li>Wartung (Änderung, Erweiterung, Fehlerbeseitigung) wird zunehmend aufwändiger.</li>
+<li>Einarbeitung anderer Programmierer ist sehr schwierig, weil die Zusammenhänge und Abhängigkeiten in der Programmlogik nicht offensichtlich sind.</li>
+</ul>
+
+<p>Aus diesen Gründen trennt man die sogenannte "Geschäftslogik" und implementiert sie in separaten Programmdateien oder sogar in separaten Projekten (LIBs, DLLs, Shared Object files *.so, et cetera). Code in der GUI dient nur noch dazu, das GUI mit der Programmlogik zu verbinden. Viele der oben genannten Nachteile entfallen dadurch.</p>
+
+<p>Bleibt noch der visuelle Aspekt. Programmweit einheitliche visuelle Darstellung (das "Design") ist nicht erzwingbar. Änderung des Designs erfordert Änderung an vielen verschiedenen Stellen. Das ist fehlerträchtig. </p>
+
+<p>Die Implementation von sogenannten "Themes" ist nicht out-of-the-box verfügbar, kann aber natürlich implementiert werden &mdash; was weiteren Aufwand und vorausschauende Planung erfordert. Damit hätte man dann eine Trennung in GUI, Design und Logik erreicht. Vergleicht man das nun mit der Web-Programmierung und der Trennung in Content, Design und Logik, wird ein Schuh daraus&hellip;</p>
+
+<p>Noch etwas Werbung für diese Arbeitsweise:</p>
+
+<ul>
+<li>Man gewöhnt sich sehr schnell daran.</li>
+<li>Gäbe es einen besseren Ansatz, wären dieses Konzept schon lange tot.</li>
+<li>Dateien können sehr einfach wiederverwendet werden, auch mehrfach im gleichen Projekt.</li>
+<li>Der Browser-Cache wird effektiv genutzt, der Datenverkehr zwischen Webserver und Browser wird dadurch automatisch minimiert.</li>
+<li>Automatisierte Software-Tests lassen sich sehr gut realisieren.</li>
+<li>Projektweit einheitliches GUI ist garantiert.</li>
+</ul>
+
+<h2>Struktur einer Webseite</h2><div>
+
+
+
+<!-- h2 --></div>
+
+<footer><a href="01-table-of-contents.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

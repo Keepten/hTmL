@@ -1,6 +1,5 @@
-
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-101 -1 202 402" width="202" height="402" fill="none" stroke="black" stroke-width="2" style="border:1px none black">
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-251 -1 502 402" width="502" height="402" fill="none" stroke="black" stroke-width="2" style="border:1px none black">
 <style>
 text { stroke:none ; fill:black ; text-anchor:middle ; dominant-baseline:middle ; font-size:18px }
 </style>
@@ -11,12 +10,29 @@ text { stroke:none ; fill:black ; text-anchor:middle ; dominant-baseline:middle 
 	</marker>
 </defs>
 
-<g transform="translate( -50, 20 )">
-<rect x="-41" y="-1" width="82" height="52" />
-<text x="0" y="25">Sensors</text>
-<line x1="0" y1="50" x2="0" y2="100" marker-end="url(#arrow)" />
+<g transform="translate( -175, 20 )">
+<rect x="-41" y="-1" width="82" height="77" />
+<text x="0" y="25">HTML</text>
+<text x="0" y="50">page.htm</text>
 </g>
 
+<g transform="translate( 0, 20 )">
+<rect x="-41" y="-1" width="82" height="77" />
+<text x="0" y="25">CSS</text>
+<text x="0" y="50">page.css</text>
+<text x="-90" y="22">LINK</text>
+<line x1="-135" y1="35" x2="-40" y2="35" marker-end="url(#arrow)" />
+</g>
+
+<g transform="translate( 0, 125 )">
+<rect x="-41" y="-1" width="82" height="77" />
+<text x="0" y="25">Script</text>
+<text x="0" y="50">page.js</text>
+<text x="-90" y="22">SCRIPT</text>
+<line x1="-135" y1="35" x2="-40" y2="35" marker-end="url(#arrow)" />
+</g>
+
+<g style="display:none">
 <g transform="translate( 50, 20 )">
 <rect x="-41" y="-1" width="82" height="52" />
 <text x="0" y="25">Actors</text>
@@ -40,5 +56,5 @@ text { stroke:none ; fill:black ; text-anchor:middle ; dominant-baseline:middle 
 <text x="0" y="16">Home Automation</text>
 <text x="0" y="36">Server</text>
 </g>
-
+</g>
 </svg>
