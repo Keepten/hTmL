@@ -1,0 +1,31 @@
+/* Kommentar: Style für Baksal */
+
+table	{
+	border-collapse:collapse;
+	margin:30px 40px 20px 50px;	/* 30 ist oben, 40 ist rechts, immer im Uhrzeiger weiter..... */
+	}
+
+td	{ 
+	border:1px solid silver ;
+	width:3em;	/* 3em bedeutet 3x die Breite des Buchstaben m */
+	height:3em;
+	text-align:center;
+	}
+
+td.loewe_will_springen 		/*wird in js: function spielbrettClickHandler gesetzt */
+	{
+	background-color:yellow;
+	}
+td.schaf_will_springen 		/*wird in js: function spielbrettClickHandler gesetzt */
+	{
+	background-color:limegreen;
+	}
+
+td.loewe_springt 		/*wird in js: function spielbrettClickHandler gesetzt */
+	{
+	background-color:darkorange;
+	}
+td.schaf_springt 		/*wird in js: function spielbrettClickHandler gesetzt */
+	{
+	background-color:darkorange;
+	}
