@@ -1,0 +1,44 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-101 -1 202 402" width="202" height="402" fill="none" stroke="black" stroke-width="2" style="border:1px none black">
+<style>
+text { stroke:none ; fill:black ; text-anchor:middle ; dominant-baseline:middle ; font-size:18px }
+</style>
+
+<defs>
+<marker id="arrow" viewBox="0 0 10 4" refX="10" refY="2" markerUnits="strokeWidth" markerWidth="10" markerHeight="4" orient="auto-start-reverse">
+	<path d="M 0 0 L 10 2 L 0 4 z" fill="black" stroke="none" />
+	</marker>
+</defs>
+
+<g transform="translate( -50, 20 )">
+<rect x="-41" y="-1" width="82" height="52" />
+<text x="0" y="25">Sensors</text>
+<line x1="0" y1="50" x2="0" y2="100" marker-end="url(#arrow)" />
+</g>
+
+<g transform="translate( 50, 20 )">
+<rect x="-41" y="-1" width="82" height="52" />
+<text x="0" y="25">Actors</text>
+<line x1="0" y1="100" x2="0" y2="50" marker-end="url(#arrow)" />
+</g>
+
+<g transform="translate( 0, 120 )">
+<rect x="-91" y="-1" width="182" height="52" />
+<text x="0" y="25">BLE MQTT Gateway</text>
+<line x1="0" y1="50" x2="0" y2="100" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+</g>
+
+<g transform="translate( 0, 220 )">
+<rect x="-91" y="-1" width="182" height="52" />
+<text x="0" y="25">MQTT Broker</text>
+<line x1="0" y1="50" x2="0" y2="100" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+</g>
+
+<g transform="translate( 0, 320 )">
+<rect x="-91" y="-1" width="182" height="52" />
+<text x="0" y="16">Home Automation</text>
+<text x="0" y="36">Server</text>
+</g>
+
+</svg>
