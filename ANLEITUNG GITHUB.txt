@@ -33,14 +33,14 @@ Mit dem -m Parameter wird ein Kommentar eingegeben, etwa welchen Fehler man bese
 8. Das lokale "Repository" zum Github Server pushen:
 	git push
 
-Normalerweise war's das. Manchmal gibt es eine Fehlermeldung, etwa dass das Remote Repository afu dem Server bereits von mir geändert wurde. Dann
+Normalerweise war's das. Manchmal gibt es eine Fehlermeldung, etwa dass das Remote Repository auf dem Server bereits von mir geändert wurde. Dann
 
 9. Das remote Repository pullen:
 	git pull
 
 Das sollte so klappen.
 
-10. Dann nochmal pushenÖ
+10. Dann nochmal pushen
 	git push
 
 Das sollte auch so klappen.
