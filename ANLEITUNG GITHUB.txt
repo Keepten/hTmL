@@ -54,3 +54,5 @@ Das sollte auch so klappen.
 
 Sollte ohne Fehler klappen!
 
+zum starten im Browser:
+   https://keepten.github.io/html/index.htm    eingeben.
