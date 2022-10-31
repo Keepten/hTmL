@@ -10,10 +10,13 @@ td	{
 	width:3em;	/* 3em bedeutet 3x die Breite des Buchstaben m */
 	height:3em;
 	text-align:center;
+	background-color: white;
 	}
-
-td.loewe_will_springen 		/*wird in js: function spielbrettClickHandler gesetzt */
-	{
+/*	- td bedeutet table data cell
+	- mit dem Klassennamen ändere ich dien Farbhintergrund
+*/
+td.loewe_will_springen 		/*wird in js: function spielbrettClickHandler gesetzt	*/
+	{						/* hinter dem Punkt von td steht der Klassenname		*/
 	background-color:yellow;
 	}
 td.schaf_will_springen 		/*wird in js: function spielbrettClickHandler gesetzt */

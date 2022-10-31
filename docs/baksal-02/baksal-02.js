@@ -2,18 +2,23 @@
 
 // Variablendeklarationen und Initialisierungen
 // Die folgenden Anweisungen werden nur _ein_Mal_ beim Laden des Dokumentes ausgeführt.
+// die folgenden vier Variablen sind global und bleiben während der Laufzeit erhalten.
+// die folgenden drei Variablen definieren den Zustand der state machine
 
 var status = "neutral";  // Speichert den Zustand der State Machine
-var spielbrett = document.getElementById("spielbrett"); // referenz auf table-objekt mit der ID spielbrett besorgen
 var startZelle = null;  // erster Klick
 var zielZelle = null;  // zweiter Klick
+
+var spielbrett = document.getElementById("spielbrett"); // referenz auf table-objekt mit der ID spielbrett besorgen
+
 
 // Funktionsdeklaration, die nur ein Mal beim Laden des Dokumentes verarbeitet wird.
 // Dabei wird die Deklaration gelesen, geprüft, aber NICHT ausgeführt.
 // Der Code soll nur bei einem Klick auf die Tabelle ausgeführt werden.
 
 function spielbrettClickHandler(eventInfo)
-	{	// click händler erzeugen
+	{	/* diese function behandelt (nur) den einfachen Mausklick innerhalb der Tabelle!
+			alle anderen Klicks außerhalb der Tabelle werden ignoriert */
 		// eventInfo (ist ein Parameter) = enthält Infos über das aufgetretene Ereignis
 
 	// Diese Switch-Anweisung implementiert eine State Machine.
@@ -30,13 +35,14 @@ function spielbrettClickHandler(eventInfo)
 		zielZelle = eventInfo.target;
 		if ( startZelle === zielZelle ) {
 			// Startzelle wurde deselektiert
-			startZelle = zielZelle = null;
 			status = "neutral";
+			zielZelle.className = "";
+			startZelle = zielZelle = null;
 			}
 		else if ( zielZelle.textContent === "L" ) {  
 			// ein anderer Löwe ausgewählt
 			// Status ändert sicht nicht
-			startZelle.className = "" ;
+			startZelle.className = "" ;		/* Klassenname der Startzelle gelöscht und damit die Hintergrundfarbe */
 			zielZelle.className = status;
 			startZelle = zielZelle;
 			zielZelle = null;
@@ -48,8 +54,11 @@ function spielbrettClickHandler(eventInfo)
 		break;
 	case "schaf_will_springen":
 		zielZelle = eventInfo.target;
+			// prüfen ob das Schaf bleibt wo es ist
 		if ( startZelle === zielZelle ) {
-			// Startzelle wurde deselektiert
+			// Hintergrundfarbe wieder zurücksetzen
+			zielZelle.className = "";	
+			// state machine in Grundzustand zurücksetzen
 			startZelle = zielZelle = null;
 			status = "neutral";
 			}
@@ -79,6 +88,7 @@ function spielbrettClickHandler(eventInfo)
 			zielZelle.textContent = "L" ;
 			startZelle.className = zielZelle.className = "" ;
 			status = "neutral";
+			startZelle = zielZelle = null;
 			}
 		break;
 	case "schaf_springt" :
@@ -91,13 +101,16 @@ function spielbrettClickHandler(eventInfo)
 		else if ( eventInfo.target === zielZelle ) {
 			// nu aber doch jetz
 			startZelle.textContent = "" ;
-			zielZelle.textContent = "L" ;
+			zielZelle.textContent = "S" ;
 			startZelle.className = zielZelle.className = "" ;
+			/* die beiden folgenden Zeile setzen die "state machine" in den Grundzustand zurück */
 			status = "neutral";
+			startZelle=zielZelle=null;
 			}
 		break;
 		}
 	console.log(status);
+	/* console.log zeigt den Wert von status in der Console des Browser Debugger an*/
 	}
 
 
