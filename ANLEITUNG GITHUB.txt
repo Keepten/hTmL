@@ -1,0 +1,56 @@
+Änderungen hochladen
+------------------------------
+1. Windows Kommandzeile (cmd.exe) starten 
+
+2. Zum Projektverzeichnis navigieren
+	E:
+	cd E:\Entwicklung\html
+
+3. Git Status abfragen
+	git status
+
+4. Alle Dateien unter der Überschrift "Changes not staged for commit" "hinzufügen"
+	git add dateiname
+	oder git add dat*
+
+Hinweis: Wildcards nutzen.
+Hinweis: Mit der TAB Taste löst man die automatische Vervollständigung aus. Wie unter Linux.
+
+5.  Alle Dateien unter der Überschrift "Untracked files" hinzufügen
+	git add dateiname
+	oder git add dat*
+
+6. Nochmal Git Status abfragen
+	git status
+
+Es sollten jetzt nur grüne Einträge vorhanden sein.
+
+7. Die hinzugefügten Datein "committen":
+	git commit -m "Info zum aktuellen Programmstand"
+
+Mit dem -m Parameter wird ein Kommentar eingegeben, etwa welchen Fehler man beseitigt hat oder welche Erweiterung man realisiert hat. Oder einfach nur einen Punkt.
+
+8. Das lokale "Repository" zum Github Server pushen:
+	git push
+
+Normalerweise war's das. Manchmal gibt es eine Fehlermeldung, etwa dass das Remote Repository afu dem Server bereits von mir geändert wurde. Dann
+
+9. Das remote Repository pullen:
+	git pull
+
+Das sollte so klappen.
+
+10. Dann nochmal pushenÖ
+	git push
+
+Das sollte auch so klappen.
+
+
+Änderungen Runterladen
+--------------------------------
+
+1. Remote Repo pullen
+	git pull
+
+Sollte ohne Fehler klappen.
+
