@@ -52,5 +52,5 @@ Das sollte auch so klappen.
 1. Remote Repo pullen
 	git pull
 
-Sollte ohne Fehler klappen.
+Sollte ohne Fehler klappen!
 
