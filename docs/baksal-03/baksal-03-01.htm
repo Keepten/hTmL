@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-10-30" />
+<meta name="version" content="1" />
+<meta name="description" content="Table cell background pattern study" />
+
+<link rel="stylesheet" href = "./baksal-03-01.css" />
+
+<title>Baksal 03-01 Hintergrundbild Studie</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 03-01<br/>Hintergrundbild Studie</h1>
+
+<p>In dieser Studie wird eine Tabelle (TABLE) mit einer einzelnen Zelle (TD) dargestellt und mit einem Hindergrundbild versehen. So sieht's aus:</p>
+
+<figcaption>Tabelle 1: Einzelne Zelle mit Hintergrundbild</figcaption>
+<table id="spielbrett">
+<tr>	
+	<td>L</td>
+</tr>
+</table>
+
+<h2>Bemerkungen</h2><div>
+
+<p>Hier ist der HTML Code:</p>
+
+<figcaption>Listing 1: HTML Code für das Spielbrett</figcaption>
+<pre>
+&lt;table id="spielbrett"&gt;
+    &lt;tr&gt;	
+        &lt;td&gt;L&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</pre>
+
+<p>Der HTML Code zeigt zwar den Zelleninhalt "L", aber enthält offensichtlich keinen Hinweis auf das Hintergrundbild. Das ist richtig, denn das Bild ist in diesem Fall nicht "Content" wie das grosse "L", sondern es dient der grafischen Gestaltung. Es wird daher dem "Design" zugeordnet und mit einer CSS-Regel eingebunden:</p>
+
+<figcaption>Listing 2: CSS-Code zur Einbindung der Hintergrundgrafik</figcaption>
+<pre>
+table#spielbrett td {
+    &hellip;
+    background-image : url(pattern-22.svg); 
+    background-size : contain ;
+    }
+</pre>
+
+<p>Werfen wir einen Blick auf den Selektor der Regel. Man liest ihn zweckmäßigerweise von hinten nach vorne. Der Selektor adressiert also HTML TD-Elemente.</p>
+
+<p>Das vorausgehende Leerzeichen ist, man höre und staune, ein CSS Operator! Also absolut <em>nicht bedeutungslos</em> wie sonst überall in der Programmierung. Er bedeutet "ist ein direktes oder indirektes Kind des linken Operanden".</p>
+
+<p>Schauen wir uns also den linken Operanden an: <tt>table#spielbrett</tt>. Hier finden wir wieder einen Operator, das Hash (#). Es bedeutet <i>mit einem ID-Attribut</i>. Es geht also um TABLE Elemente mit einem ID Attribut "spielbrett". Das gibt es tatsächlich. Siehe Listing 1.</p>
+
+<p>Es wäre zwar eigentlich nicht nötig gewesen, den Selektor so komplex zu gestalten, denn auf dieser Seite gibt es tatsächlich nur ein einziges TD element. Ein einfacher Selektor <tt>TD</tt> hätte also vollkommen gereicht. Aber einfach kann ja jeder.</p>
+
+<p>Zusammengefasst: Der Selektor adressiert TD-Elemente in TABLEs mit der ID "spielbrett".</p>
+
+<p>Werfen wir nun einen Blick auf die Attribut-Wertzuweisungen in dieser Regel. Da haben wir zunächst die Eigenschaft <tt>background-image</tt>, der der Wert <tt>url(pattern-22.svg)</tt> zugewiesen wird. Es ist also ein Link auf das Hintergrundbild.</p>
+ 
+<p>Die nächste Zeile weist der Eigenschaft <tt>background-size</tt> den Wert "contain" zu, was bedeutet, dass das Bild den Container ausfüllen soll.</p>
+
+<p>Das wars auch schon. Wie man oben sieht, hat man einen Kreis im Zentrum und ein paar Linien hindurch.</p>
+
+<p>Ein paar Worte zum Bildformat. Es werden alle gängigen Internet-Bildformate akzeptiert, etwa PNG, SVG, JPG. Der Vorteil von SVG ist, dass es ein Vektorformat ist und sich verlustfrei auf beliebige Grösse skalieren lässt. Ausserdem ist es als XML-Format mit jedem Text-Editor editierbar. Also perfekt für diese Zwecke.</p>
+
+<!-- h2 --></div>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-11-01" />
+<meta name="version" content="1" />
+<meta name="description" content="Table cell background pattern study" />
+
+<link rel="stylesheet" href = "./baksal-03-03.css" />
+
+<title>Baksal 03-03 Hintergrundbilder für die Randfelder</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 03-03<br/>Hintergrundbilder für die Randfelder</h1>
+
+<p>In der vorigen Studie haben wir eine komplette Tabelle (TABLE) mit Scriptcode generiert. Die TD-Elemente erhielten ihr Hintergrundbild über eine CSS-Regel. Allerdings waren die Hintergrundbilder für die Randfelder nicht korrekt, es sollten keine Verbindungslinien nach Aussen gezeichnet werden.</p>
+
+<p>Um das zu realisieren, benötigen wir zunächst 8 zusätzliche Hintergrundbilder, die ebenfalls als SVG erstellt werden. Insgesamt haben wir dann 9 verschiedene Bilder:</p>
+
+<figcaption>Bild 1: Hintergrund-Muster</figcaption>
+<div class="patterns">
+<img src="pattern-11.svg" />
+<img src="pattern-12.svg" />
+<img src="pattern-13.svg" /><br/>
+<img src="pattern-21.svg" />
+<img src="pattern-22.svg" />
+<img src="pattern-23.svg" /><br/>
+<img src="pattern-31.svg" />
+<img src="pattern-32.svg" />
+<img src="pattern-33.svg" />
+</div>
+
+<p>Im File Name ist die Position über Zeilen und Spaltenindex kodiert, so dass man sie leicht wieder erkennt: Links oben ist <tt>pattern-11</tt>, im Zentrum ist <tt>pattern-22</tt>, rechts unten ist <tt>pattern-33</tt>.</p>
+
+<p>Der CSS-Code in <tt>baksal-03-03.css</tt> sieht im Prinzip aus wie in der Vorgängerstudie, allerdings wurde die Zuweisung des Hintergrundbildes der Übersicht halber extrahiert und in eine eigene CSS-Rule gesteckt:</p>
+
+<pre>
+table#spielbrett { 
+	border-style : none ;
+	margin : 20px 0px 20px 20px ;
+	border-collapse : collapse ;
+	}
+
+table#spielbrett td {
+	border-style : none ;
+	width : 30px ;
+	height : 30px ;
+	text-align : center ;
+	background-size : contain ;
+	}
+
+table#spielbrett td {  /* Zuordnung des Hintergrundbildes */
+	background-image : url(pattern-22.svg); 
+	}
+</pre>
+
+<p>Wie man sieht, sind die beiden letzten Selektoren identisch. Mit anderen Worten: Man kann eine CSS-Rule <em>splitten</em> und damit für mehr Übersicht sorgen.</p>
+
+<p>Der Selektor adressiert alle TD-Elemente in der Spielbrett-TABLE und weist ihnen das Hintergrund-Pattern 22 zu. Das sieht dann so aus:</p>
+
+<img src="fig-001.png" width="185"/>
+
+<p>Die Randfelder sind, wie bereits festgestellt, nicht korrekt. Daher fügen wir eine zusätzliche CSS-Regel ein:</p>
+
+<pre>table#spielbrett tr:first-child td {
+    background-image : url(pattern-12.svg); 
+    }
+</pre>
+
+<p>Sie adressiert die TDs in der ersten Zeile (TR:first-child) und weist ihr das Pattern 12 als Hintergrundbild zu.</p>
+
+<img src="fig-002.png" width="185"/>
+
+<p>Das sieht schon mal ganz gut aus. Ähnlich gehen wir für die TDs der letzten Zeile TR:last-child vor:</p>
+
+<pre>
+table#spielbrett tr:last-child td {
+    background-image : url(pattern-32.svg); 
+    }
+</pre>
+
+<img src="fig-003.png" width="185"/>
+
+<p>Die gleiche Idee wenden wir für die Zellen am linken Rand an:</p>
+
+<pre>
+table#spielbrett tr td:first-child {
+	background-image : url(pattern-21.svg); 
+	}
+</pre>
+
+<p>Hier wird die erste Zelle TD in jeder Zeile TR adressiert. Ergebnis:</p>
+
+<img src="fig-004.png" width="185"/>
+
+<p>Das können wir auch für die letzte Zelle in jeder Zeile machen:</p>
+
+<pre>
+table#spielbrett tr td:last-child {
+	background-image : url(pattern-23.svg); 
+	}
+</pre>
+
+<p>Ergebnis:</p>
+
+<img src="fig-005.png" width="185"/>
+
+<p>Jetzt müssen nur noch die vier Eckfelder behandelt werden. Beginnen wir links oben und fügen folgende CSS-Regel ein:</p>
+
+<pre>
+table#spielbrett tr:first-child td:first-child {
+	background-image : url(pattern-11.svg); 
+	}
+</pre>
+
+<p>Hier wird das erste TD-Element in der ersten TR-Reihe adressiert, und es wird ihm das Pattern 11 zugewiesen. Der Effekt:</p>
+
+<img src="fig-006.png" width="185"/>
+
+<p>Sieht gut aus. Oben rechts erfordert diese Regel:</p>
+
+<pre>
+table#spielbrett tr:first-child td:last-child {
+	background-image : url(pattern-13.svg); 
+	}
+</pre>
+
+<p>Kontrolle:</p>
+
+<img src="fig-007.png" width="185"/>
+
+<p>Unten links:</p>
+
+<pre>
+table#spielbrett tr:last-child td:first-child {
+	background-image : url(pattern-31.svg); 
+	}
+</pre>
+
+<p>Sieht so aus:</p>
+
+<img src="fig-008.png" width="185"/>
+
+<p>Und die letzte Ecke unten rechts:</p>
+
+<pre>
+table#spielbrett tr:last-child td:last-child {
+	background-image : url(pattern-33.svg); 
+	}
+</pre>
+
+<p>So sollte es aussehen:</p>
+
+<img src="fig-009.png" width="185"/>
+
+<p>Zum Beweis, dass da kein Photoshopper am Werk war, hier die Live-TABLE:</p>
+
+<figcaption>Tabelle 1: Spielbrett mit korrekten Hintergrundbildern</figcaption>
+<table id="spielbrett"></table>
+
+<p>Mache im Browser einen Rechtsklick auf die Tabelle und rufe die Developer Tools auf. Dann untersuche die Tabellenzelle, speziell die zur Anwendung gekommenen CSS-Regeln.</p>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+<script src="baksal-03-03.js"></script>
+
+</body></html>
