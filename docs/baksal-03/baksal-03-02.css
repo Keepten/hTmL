@@ -1,0 +1,19 @@
+pre {
+	margin-left : 20px ;
+	}
+table#spielbrett { 
+	border-style : none ;
+	margin : 20px 0px 20px 20px ;
+	border-collapse : collapse ;
+	}
+
+table#spielbrett td {
+	border-style : none ;
+	width : 30px ;
+	height : 30px ;
+	text-align : center ;
+	background-image : url(pattern-22.svg); 
+	background-size : contain ;
+	}
+
+

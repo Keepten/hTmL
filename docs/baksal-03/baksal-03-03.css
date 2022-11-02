@@ -1,0 +1,62 @@
+div.patterns img {
+	border : 1px solid silver ;
+	margin : 10px 10px 10px 10px ;
+	width : 40px ;
+	height : 40px ;
+	}
+
+img {
+	margin-left : 20px ;
+	}
+
+pre { margin-left : 20px ; }
+
+table#spielbrett { 
+	border-style : none ;
+	margin : 20px 0px 20px 20px ;
+	border-collapse : collapse ;
+	}
+
+table#spielbrett td {
+	border-style : none ;
+	width : 30px ;
+	height : 30px ;
+	text-align : center ;
+	background-size : contain ;
+	}
+
+table#spielbrett td {
+	background-image : url(pattern-22.svg); 
+	}
+
+table#spielbrett tr:first-child td {
+	background-image : url(pattern-12.svg); 
+	}
+
+table#spielbrett tr:last-child td {
+	background-image : url(pattern-32.svg); 
+	}
+
+table#spielbrett tr td:first-child {
+	background-image : url(pattern-21.svg); 
+	}
+
+table#spielbrett tr td:last-child {
+	background-image : url(pattern-23.svg); 
+	}
+
+table#spielbrett tr:first-child td:first-child {
+	background-image : url(pattern-11.svg); 
+	}
+
+table#spielbrett tr:first-child td:last-child {
+	background-image : url(pattern-13.svg); 
+	}
+
+table#spielbrett tr:last-child td:first-child {
+	background-image : url(pattern-31.svg); 
+	}
+
+table#spielbrett tr:last-child td:last-child {
+	background-image : url(pattern-33.svg); 
+	}

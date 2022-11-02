@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-11-01" />
+<meta name="version" content="1" />
+<meta name="description" content="Table cell background pattern study" />
+
+<link rel="stylesheet" href = "./baksal-03-02.css" />
+
+
+<title>Baksal 03-02 Programmatische Generierung von Tabellen</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 03-02<br/>Programmatische Generierung von Tabellen</h1>
+
+<p>In dieser Studie wird eine komplette Tabelle (TABLE) mit Scriptcode generiert. Die TD-Elemente erhalten ihr Hintergrundbild wie in der vorausgegangenen Studie über eine CSS-Regel:</p>
+
+<pre>
+table#spielbrett td {
+    border-style : none ;
+    width : 30px ;
+    height : 30px ;
+    text-align : center ;
+    background-image : url(pattern-22.svg); 
+    background-size : contain ;
+    }
+</pre>
+
+<figcaption>Tabelle 1: Spielbrett mit Hintergrundbildern</figcaption>
+<table id="spielbrett"></table>
+
+<p>Die Bilder für die Randfelder sind allerdings noch nicht korrekt. Das erledigen wir in der nächsten Studie. Zunächst schauen wir uns mal den HTML Code für die Tabelle an. Er ist sehr, hmmm, sagen wir mal, <em>luftig</em>:</p>
+
+<pre>
+&lt;table id="spielbrett"&gt;&lt;/table&gt;
+</pre>
+
+<p>Wie man unschwer erkennt, gibt es weder Zeilenelemente (TR, Table Row), noch Zellenelemente (TD, Table Data Cell). Scrollt man weiter nach unten, findet man ein sehr verdächtiges Element:</p>
+
+<pre>&lt;script src="baksal-03-02.js"&gt;&lt;/script&gt;</pre>
+
+<p>Das schauen wir uns doch mal näher an:</p>
+
+<pre>
+(function(){ 
+    &hellip;
+
+    })(); // Anonyme Funktion sofort ausführen
+</pre>
+
+<p>Wir haben da eine Funktionsdeklaration ohne Funktionsnamen &mdash; <tt>function() { }</tt>. Kann das was bedeuten?</p>
+<p>Kann es. Es ist eine <em>anonyme Funktion</em>.</p>
+<p>Dummerweise kann man Funktionen ohne Namen irgendwie nicht aufrufen. Sie hat ja keinen Namen. Aber hinter der Funktion, vor dem Semikolon, steht ein Function Call Operator <tt>()</tt>. Er ruft die eben deklarierte Funktion sofort auf. Damit das funktioniert und es keinen Syntax Error gibt, muss die Funktionsdeklaration in einen eigenen Satz Klammern gesetzt werden.</p>
+
+<p>Nachdem der Funktionsaufruf-Operator gelaufen ist, verschwindet die Deklaration aus dem Sichtkreis und ist für alle Zeit verschwunden.</p>
+
+<p>Eine solche Konstruktion nennt man in Fachkreisen <i>IIFE</i>, Immediately Invoked Function Expression. Sie hat einen Einwegcharakter, ex und hopp. Perfekt für Initialisierungen, die etwas komplexer sind und Logik und lokale Variablen enthalten müssen. Nach der Ausführung kann der Browser sie dann aus dem Speicher kicken.</p>
+
+<p>Zurück zum Thema. Die Funktion soll dieg leere Tabelle mit Leben befüllen. Die Idee ist, 2 Schleifen zu verschachteln, die äußere generiert die Zeilen, dien innere generiert die Zellen. Etwa so:</p>
+
+<pre>
+(function() {  // IIFE
+    const zeilen = spalten = 5 ;
+    let spielbrett = document.getElementById( "spielbrett" );
+    for ( let i = 0 ; i < zeilen ; i ++ ) {
+        const reihe = spielbrett.insertRow( );
+        for ( let j = 0 ; j < spalten ; j ++ ) {
+            const zelle = reihe.insertCell( );
+            }
+        }
+    } ) ( ) ;  // ausführen
+</pre>
+
+<p>Die Konstantendeklaration zu Beginn legt die Größe des Spielfeldes fest. Dann wird eine Referenz auf das Spielbrett ermittelt. Sie zeigt auf ein HTML TABLE Element. Es besitzt eine Methode "insertRow", die sinnigerweise ein TR element erzeugt und integriert. Sinnigerweise hat ein Table Row Element auch eine Funktion "insertCell", die die Zellen einer Zeile erzeugt. Mehr braucht kein Mensch.</p>
+
+<p>Das war's dann auch schon. Mehr ist da nicht dran. Viel Schreibarbeit gespart, und flexibler in Bezug auf die Spielfeldgröße ist es auch.</p>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+<script src="baksal-03-02.js"></script>
+
+</body></html>
