@@ -1,0 +1,21 @@
+/*
+ *		spielbrett.css
+ */
+
+	/* Styles for the game board elements */
+
+ circle { stroke : black ; stroke-width : 2px ; fill : white ; r : 10 }
+ circle[cx="0"][cy="0"] { stroke : palevioletred }
+ line { stroke : black ; stroke-width : 1px } 
+ text { text-anchor : middle ; alignment-baseline : central }
+ 
+	/* Styles for the animals */
+ 
+ .lion { fill : orange }
+ .goat { fill : honeydew }
+
+	/* Styles for the visualising moves */
+
+ circle.animalSelected { stroke : red }
+ circle.animalDestination { stroke : red }
+ circle.validDestination { stroke : yellowgreen !important }

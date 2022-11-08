@@ -1,0 +1,163 @@
+<!DOCTYPE html> 
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-11-03" />
+<meta name="version" content="1" />
+<meta name="description" content="Studien zur Interaktivität: Einbinden von externen Style Sheets und Script Files in SVG, Behandlung von Pointer Events." />
+
+<link rel="stylesheet" href = "../page.css" />
+
+<title>Baksal 05-03 - Entwurf des Spielbretts in SVG</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 05-03<br/>Entwurf des Spielbretts in SVG</h1>
+
+<p>Aufgrund der vorangegangenen Studien haben wir beschlossen, das komplette Spielbrett mitsamt Logik und Design in 3 Dateien zu implementieren:</p>
+
+<ul>
+<li><a href="spielbrett.svg">spielbrett.svg</a> enthält die Grafik</li>
+<li><a href="spielbrett.css">spielbrett.css</a> formatiert die Grafik-Elemente</li>
+<li><a href="spielbrett.js">spielbrett.js</a> enthält die komplette Funktionalität des Spiels</li>
+</ul>
+
+<p>Die <a href="spielbrett.svg" target="_blank">SVG-Grafik</a> kann direkt in den Browser geladen werden, oder in eine HTML-Datei über ein OBJECT-Element als externe Grafik <a href="#fig-001">eingebettet</a> werden. Beide Varianten sind voll lauffähig.</p>
+
+<figcaption id="fig-001">Bild 1: Das Spiel eingebettet in dieser HTML-Datei</figcaption>
+<object id="obj-01" data="spielbrett.svg" type="image/svg+xml" style="width:200px ; border:1px none silver"></object>
+
+<h2>Struktur des Spielbretts</h2><div>
+
+<p>In der oberen Hälfte befindet sich das Spielfeld, symbolisiert durch 5 x 5 Kreise. Die Eckpositionen sind zu Spielbeginn bereits durch Löwen besetzt. In der unteren Hälfte sind 20 weitere Kreise für die Ziegen, die auf das Spielfeld gesetzt werden müssen. Die Tiere werden durch Buchstaben symbolisert. Ihre Bewegungsmöglichkeiten sind durch die Spielregeln eingeschränkt.</p>
+
+<!--h2--></div>
+
+<h2>Der SVG-Code</h2><div>
+
+<p>Der SVG Code spiegelt die geometrische Struktur wieder. Die Spielfelder sind mit CIRCLE-Elementen realisiert, sie sind in 2 Gruppen (G) organisiert mit den IDs "field" für die Spielfelder und "goat-start-field" für die Startpositionen der Ziegen ausserhalb des Spielfeldes. Die LINE-Elemente zeigen die möglichen Wege zwischen den Spielfeldern an und sind ein einer eigenen Gruppe.</p>
+
+<pre>
+&lt;g name="lines"&gt; &hellip; &lt;/g&gt;
+&lt;g name="field"&gt; &hellip; &lt;/g&gt;
+&lt;g name="goat-start-field"&gt; &hellip; &lt;/g&gt;
+</pre>
+
+<p>Der Inhalt der Gruppen ist nicht besonders interessant, beispielsweise enthält die <tt>lines</tt>-Gruppe eine Ansammlung waagerechter, senkrechter und diagonaler Linien:</p>
+
+<pre>
+&lt;g name="lines"&gt;
+    &lt;line x1="-80" x2="0" y1="0" y2="80" /&gt;
+    &lt;line x1="-80" x2="80" y1="-80" y2="80" /&gt;
+      &vellip;
+    &lt;line x1="40" x2="40" y1="-80" y2="80" /&gt;
+    &lt;line x1="80" x2="80" y1="-80" y2="80" /&gt;
+    &lt;/g&gt;
+</pre>
+
+<p>Die beiden Spielfelder enthalten nur Kreise:</p>
+
+<pre>
+&lt;g id="field" &gt;
+    &lt;circle cx="-80" cy="-80" class="lion" /&gt;
+    &lt;circle cx="-40" cy="-80" /&gt;
+    &vellip;
+    &lt;circle cx="40" cy="80" /&gt;
+    &lt;circle cx="80" cy="80" class="lion" /&gt;
+    &lt;/g&gt;
+</pre>
+
+<p>Einige Felder sind bei Spielbeginn bereits mit Tieren vorbesetzt, sie haben daher ein entsprechendes Klassenattribut ("lion").</p>
+
+<p>2 weitere Gruppen enthalten die TEXT-Elemente für Löwen und Ziegen:</p>
+
+<pre>
+&lt;g id="goats"&gt; &hellip; &lt;/g&gt;
+&lt;g id="lions"&gt; &hellip; &lt;/g&gt;
+</pre>
+
+<p>Diese TEXT-Elemente sind die eigentlichen Spielfiguren. Sie werden in der Datein <em>unterhalb</em> der Linien und Kreise angeordnet, damit sie auf der Z-Achse <em>über</em> ihnen angeordnet und nicht verdeckt werden.</p>
+
+<p>Hier ein Auszug:</p>
+
+<pre>
+&lt;g id="goats"&gt;
+    &lt;text x="-80" y="120" &gt;G&lt;/text&gt;
+    &lt;text x="-40" y="120" &gt;G&lt;/text&gt;
+      &vellip;
+    &lt;text x="40" y="240" &gt;G&lt;/text&gt;
+    &lt;text x="80" y="240" &gt;G&lt;/text&gt;
+    &lt;/g&gt;
+
+&lt;g id="lions"&gt;
+    &lt;text x="-80" y="-80"&gt;L&lt;/text&gt; 
+    &lt;text x="80" y="-80"&gt;L&lt;/text&gt; 
+    &lt;text x="80" y="80"&gt;L&lt;/text&gt; 
+    &lt;text x="-80" y="80"&gt;L&lt;/text&gt; 
+    &lt;/g&gt;
+</pre>
+
+<p>Es ist wichtig zu wissen, dass CIRCLE-Elemente <em>nicht</em> als Container für andere SVG-Elemente fungieren können. Wäre das der Fall, könnte man ein Tier einfach in einen anderen Container verschieben und hätte so die Positionierungslogik einfach gelöst. Ebenso könnte man sehr einfach prüfen, ob ein Spielfeld besetzt ist, indem man die Länge der <tt>CIRCLE.childNodes</tt>-Liste prüft. Ist die Länge null, ist das Feld leer.</p>
+
+<p>Das das nicht funktioniert, muss man die Koordinaten x und y beim Tier mit cx und cy des Kreises vergleichen. Sind sie identisch, befindet sich das Tier genau über dem Kreis. Was gleichbedeutend damit ist, dass das Feld besetzt ist.</p>
+
+<p>Die Spiellogik setzt allerdings auf ein anderes Prinzip, bei dem ständiges Durchsuchen der Positionen der Tiere vermieden wird.</p>
+
+<!--h2--></div>
+
+<h2>Attributierung der Spielfelder</h2><div>
+
+<p>Enthält ein Spielfeld (CIRCLE) ein Tier (TEXT), haben beide die gleichen Koordinaten, und das Feld wird mit einem Klassennamen dekoriert, das der Art des Tieres entspricht:</p>
+
+<pre>
+&lt;circle cx="-80" cy="-80" class="<hi>lion</hi>" /&gt;
+&lt;circle cx="-80" cy="120" class="<hi>goat</hi>" /&gt;
+</pre>
+
+<p>Der Klassenname wird für die Festlegung von Strich- und Füllfarbe mit CSS-Regeln genutzt. Der Script-Code benutzt diese Klassennamen um zu überprüfen, ob ein Feld besetzt ist, und mit welcher Tierart.</p>
+
+<p>Weitere Klassennamen werden für die Hervorhebung von Feldern eines Zuges (Startfeld, mögliche Zielfelder, ausgewähltes Zielfeld) und die Einschränkung der Bewegungsmöglichkeiten eines Tieres eingesetzt:</p>
+
+<pre>
+&lt;circle cx="-80" cy="-80" class="lion animalSelected" /&gt;
+&lt;circle cx="-80" cy="120" class="validDestination" /&gt;
+&lt;circle cx="-80" cy="120" class="animalDestination" /&gt;
+</pre>
+
+<!-- h2 --></div>
+
+<h2>CSS-Code</h2><div>
+
+<p>Es gibt nur wenige CSS-Regeln, die das Aussehen des Spielfeldes bestimmen:</p>
+
+<pre>
+    <cc>/* Styles for the game board elements */</cc>
+
+ circle { stroke : black ; stroke-width : 2px ; fill : white ; r : 10 }
+ circle[cx="0"][cy="0"] { stroke : palevioletred }
+ line { stroke : black ; stroke-width : 1px } 
+ text { text-anchor : middle ; alignment-baseline : central }
+ 
+    <cc>/* Styles for the animals */</cc>
+ 
+ .lion { fill : orange }
+ .goat { fill : honeydew }
+
+    <cc>/* Styles for the visualising moves */</cc>
+
+ circle.animalSelected { stroke : red }
+ circle.animalDestination { stroke : red }
+ circle.validDestination { stroke : yellowgreen !important }
+ </pre>
+
+ <p>Ein besonderer Hinweis: Die letzte Regel enthält den Zusatz "!important" für den Wert des <tt>stroke</tt> Attributes. Das ist notwendig, da anderenfalls die Regel für die Formatierung des Kreises im Zentrum (an der Position 0, 0) eine höhere Priorität hätte und nicht als gültiges Sprungziel dargestellt werden könnte.</p>
+
+<!--h2--></div>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

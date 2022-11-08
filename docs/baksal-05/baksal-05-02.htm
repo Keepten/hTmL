@@ -1,0 +1,223 @@
+<!DOCTYPE html> 
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-11-03" />
+<meta name="version" content="1" />
+<meta name="description" content="Studien zur Interaktivität: Einbinden von externen Style Sheets und Script Files in SVG, Behandlung von Pointer Events." />
+
+<link rel="stylesheet" href = "../page.css" />
+
+<title>Baksal 05 - Studien zur Interaktivität</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 05<br/>Studien zur Interaktivität</h1>
+
+<p>In diesem Abschitt untersuchen wir die Interaktionsmöglichkeiten von HTML, SVG und JavaScript. Wir prüfen die Einbindung von externem CSS und JavaScript in eine SVG-Datei, das Behandeln von Pointer Events innerhalb des SVG Files und im HTML Wrapper, sowie den Zugriff auf SVG-Inhalte aus dem Wrapper.</p>
+
+<p>Die die untersuchte Struktur sieht folgendermaßen aus:</p>
+
+<figcaption>Bild 1: Struktur der Anwendung</figcaption>
+<img src="fig-001.svg" style="border:1px solid silver" />
+
+<figcaption>Legende</figcaption>
+<dl class="legende">
+<dt>Schwarz</dt><dd>Referenz auf externe Datei, Einbindung</dd>
+<dt>Grün</dt><dd>Zugriff auf DOM-Elemente (lesend/schreibend)</dd>
+<dt>Orange</dt><dd>Event-Versand and Event-Handler/Script</dd>
+<dt>Violett</dt><dd>Anwendung von CSS Regeln auf DOM-Elemente</dd>
+<dt>unterbrochene Linien</dt><dd>Funktioniert nicht</dd>
+</dl>
+
+<p>Die HTML-Datei bindet ein externes Stylesheet "page.css" über ein LINK-Element ein, sowie das externe Script "page.js" über ein SCRIPT-Elemente. Damit wird die Seitengestaltung und die Funktionaliät der Seite bereitgestellt. Die externe SVG-Grafik wird über ein OBJECT-Element eingebunden, das die Datei "image.svg" im <tt>data</tt>-Attribute adressiert.</p>
+
+<p>Die SVG-Datei bindet ihrerseits ein externes Stylesheet "image.css" über ein LINK-Element und ihre Funktionalität über ein SCRIPT-Element ein, das die Datei "image.js" referenziert.</p>
+
+<p>Die Einbindung externer Datein wird durch die schwarzen Pfeile dargestellt.</p>
+
+<p>Wie wir bereits vorher festgestellt haben, haben die Style Rules in <tt>page.css</tt> <em>keinen</em> Einfluss auf die Element in <tt>image.svg</tt>, deshalb auch die unterbrochene Linie von page.css auf image.svg. Daher muss <tt>image.svg</tt> sein eigenes Stylesheet <tt>image.css</tt> einbinden. Was aber natürlich möglich ist, dass <tt>page.htm</tt> und <tt>image.svg</tt> beide <em>das gleiche</em> Style Sheet einbinden. Damit kann man sicherstellen, dass SVG-Elemente in beiden Dateien gleich aussehen. Aber das nur am Rande.</p>
+
+<p>In den folgenden Abschnitten wollen wir die untersuchen, welche <em>Interaktionsmöglichkeiten</em> zwischen Stylesheets und Scripten auf der einen Seite, und der SVG-Grafik <tt>image.svg</tt> auf der anderen Seite bestehen. 
+
+<h2>1 Einbindung Externer Stylesheets in SVG</h2><div>
+
+<p>In dieser Studie erstellen wir eine CSS-Datei und eine SVG-Datei, die die CSS-Datei einbindet.</p>
+
+<p>Beginnen wir mit der SVG-Datei, die eine einfache SVG-Grafik enthält, einen simplen Kreis in der Mitte:</p>
+
+<figcaption>Listing 1: SVG Grafik image.svg</figcaption>
+<pre>
+&lt;<hi>svg</hi> viewBox="-50 -50 100 100" 
+    xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;<hi>link</hi> xmlns="http://www.w3.org/1999/xhtml" 
+    rel="stylesheet" href="<hi>spielbrett.css</hi>"/&gt;
+&lt;<hi>circle</hi> id="circle-01" cx="0" cy="0" r="10" /&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Wir haben das SVG Root Element, darin ein LINK Element, welches ein externes Stylesheet einbindet (spielbrett.css), und ein CIRCLE Element, das einen Kreis um den Koordinatenursprung mit dem Radius 10 generiert.</p>
+
+<p>Die CSS-Datei enthält die Style Rules für die Elemente in dem SVG-Dokument. In diesem Fall für CIRCLE-Elemente:</p>
+
+<figcaption>Listing 2: Eingebundenes Stylesheet "spielbrett.css"</figcaption>
+<pre>
+ <hi>circle</hi> {
+    stroke : black ;
+    stroke-width : 2px ;
+    fill : salmon ;
+    }
+</pre>
+
+<p>Wie bereits erwähnt, ändert sich die Standardfarbe von Schwarz auf Weiß, sobald ein SVG-Element mit CSS formatiert wird: Styling mit CSS hat höhere Priorität als Styling mit Attributen. Daher muss die Strichfarbe (<tt>stroke</tt>) explizit gesetzt werden.</p>
+
+<p>Die SVG-Grafik wird in dieses Dokument (<tt>baksal-02-05.htm</tt>) mit Hilfe eines OBJECT-Elementes eingebunden, siehe <a href="#bild-01">Bild 1</a> weiter unten:</p>
+
+<figcaption>Listing 3:HTML Code bindet die SVG-Datei ein</figcaption>
+<pre>
+&lt;<hi>object</hi> id="obj-01" <hi>data="image-06.svg"</hi> type="image/svg+xml" 
+    style="width:100px; height:100px; border:1px solid silver"&gt;
+    &lt;/object&gt;
+</pre>
+
+<p>Ein Inline Style-Attribute legt die Größe des OBJECT-Elementes und seinen Rand fest.</p>
+
+<p>Wie man sieht, funktioniert die Formatierung von Elementen in SVG genau so wie in HTML: Der Kreis präsentiert sich gefüllte mit einer Lachsfarge und schwarzem Rand. Allerdings muss im Unterschied zu HTML ein XML Namespace Attribut angegeben werden, sonst functioniert es nicht:</p>
+
+<figcaption>Listing 4: xmlns-Attribut is erforderlich</figcaption>
+<pre>
+&lt;link" href="spielbrett.css" 
+    rel="stylesheet
+    <hi>xmlns</hi>="http://www.w3.org/1999/xhtml" /&gt;
+</pre>
+
+<p>Wurde alles richtig gemacht, sollte sich hier ein orangefarbig gefüllter Kreis in der Mitte zeigen:</p>
+
+<figcaption id="bild-01">Bild 1: Gefüllter Kreis durch externes CSS</figcaption>
+<object id="obj-01" data="image-06.svg" type="image/svg+xml" style="width:100px ; height:100px ; border:1px solid silver"></object>
+
+<p>Das funktioniert alles wie erwartet. Zusammenfassend kann man sagen, dass CSS-Dateien in SVG genauso eingebunden werden können wie in "normale" HTML-Dateien. Das bereits erworbene Wissen kann also für den Gebrauch mit SVG weiterverwendet werden. CSS-Selektoren für Element-, Klassen- und Attribute-Namen funktionieren wie erwartet, lediglich die Style-Eigenschaftsnamen in den Wertzuweisungen sind anders, da spezifisch für das jeweilige SVG-Element.</p>
+
+<p>Im nächsten Abschnitt untersuchen wir die Einbindung von externen Scripten in SVG.</p>
+
+<!--h2--></div>
+
+<h2>2 Einbindung externer Scripte</h2><div>
+
+<p>Jetzt wollen wir untersuchen, ob und wie sich externe Scripte einbinden lassen, ob SVG-Elemente Pointer-Events generieren können, und wie Eventhandler die SVG-Grafik verändern können.</p>
+
+<p>Dazu wird am Ende der SVG-Datei ein Script eingebunden:</p>
+
+<figcaption>Listing 5: Einbindung eines Scriptes</figcaption>
+<pre>
+&lt;svg&gt;
+  &vellip;
+&lt;<hi>script</hi> href="image.js"&gt;&lt;/script&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Wie in einer HTML-Datei bleibt das Script-Element leer.</p>
+
+<p class="note">Achtung! Im Unterschied zu HTML, wird die externe Datei nicht über das <tt>src</tt>-Attribut, sonder über ein <tt>href</tt>-Attribut referenziert.</p>
+
+<p>Der Script-Code registriert einen einfachen "click"-Event-Handler auf dem CIRCLE-Element: </p>
+
+<figcaption>Listing 6: Einfacher Klick-Event Handler</figcaption>
+<pre>
+const circle = document.getElementById( "circle-01" );
+circle.addEventListener( "click", function() {
+    if ( circle.style.fill === "lime" ) circle.style.fill = "lightsalmon" ;
+    else circle.style.fill = "lime" ;
+    } ) ;
+</pre>
+
+<p>Dazu wird eine anonyme Funktion deklariert die den <tt>fill</tt>-Style zwischen zwei Werten (lime und lightsalmon) toggelt.</p>
+
+<p>Und hier ist die SVG-Datei zum Ausprobieren:</p>
+
+<figcaption>Bild 2: Klicks auf den Kreis ändern die Farbe</figcaption>
+<object id="obj-01" data="image-07.svg" type="image/svg+xml" style="width:100px ; height:100px ; border:1px solid silver"></object>
+
+<p>Das funktioniert soweit. Das funktioniert sogar, wenn man die SVG-Datei direkt in den Browser lädt, also <em>ohne</em> den HTML-Wrapper:</p>
+
+<p><a href="image-07.svg" target="_blank">image-07.svg</a></p>
+
+<p>In der nächsten Studie wollen wir untersuchen, ob sich die Klicks auf den Kreis auch in der HTML-Datei zu empfangen sind.</p>
+
+<!--h2--></div>
+
+<h2>3 Events im HTML-Wrapper auffangen</h2><div>
+
+<p>Die externe SVG-Grafik wurde über ein OBJECT-Element in dieses HTML-Document eingebunden. Jetzt wollen wir untersuchen, ob wir auf die einzelnen Elemente in diesem SVG-Document zugreifen und einen Klick-Event-Handler registrieren können. Dazu wird weiter unten in dieser Datei ein Panel und ein Script-Element mit folgendem Inhalt eingebaut:</p>
+
+<figcaption>Listing 7: Registrierung eines Klick Event Handlers</figcaption>
+<pre>
+&lt;script&gt;
+(function() {  <cc>// IIFE</cc>
+    <cc>// Referenz auf as Ausgabe-Panel ermitteln</cc>
+    const panel = document.getElementById( "output-panel-02" );
+    <cc>// Load Event Handler beim OBJECT-Element registrieren</cc>
+    const o = document.getElementById( "obj-02" );
+    o.addEventListener( "load", function() {
+        <cc>// SVG-Document und CIRCLE Element ermitteln</cc>
+        const c = o.getSVGDocument().getElementById( "circle-01" );
+        <cc>// Kontrollausgabe</cc>
+        panel.innerHTML = c.toString() + "<br/>";
+        <cc>// Klick-Eventhandler beim CIRCLE-Element registrieren</cc>
+        c.addEventListener( "click", function() {
+            <cc>// Jeder Klick macht macht eine Ausgabe in das Panel</cc>:
+            panel.innerHTML += "Klick!<br/>"
+            } ) ;
+        } ) ;
+    } ) ( ) ; <cc>// Immediately call the function expression above</cc>
+&lt;/script&gt;
+</pre>
+
+<p>Dazu wird eine anonyme Funktion definiert und sofort aufgerufen. Die erste Anweisgung in dieser Funktion ermittel die Referenz p auf das Panel. Es soll für Ausgaben benutzt werden. Danach wird die Referenz o auf des OBJECT-Element ermittelt, das die SVG-Datei einbindet. </p>
+
+<p>Weiter kommen wir zunächst nicht, da zu diesem Zeitpunkt das SVG-Dokument noch nicht geladen ist. Deswegen registrieren wir einen weiteren Eventhandler für den Load-Event dieses OBJECT-Elementes. Das Element feuert diesen Event, wenn das referenzierte Dokument vollständig geladen ist.</p>
+
+<p>In diesem Event-Handler wird über die Methode <tt>getSVGDocument</tt> eine Referenz auf das eingebundene SVG Dokument ermittelt. Dessen Methode <tt>getElementById</tt> schließlich liefert eine Referenz c auf den Kreis.</p>
+
+<object id="obj-02" data="image-07.svg" type="image/svg+xml" style="width:100px ; height:100px ; border:1px solid silver"></object>
+
+<figcaption>Output Panel</figcaption>
+<div id="output-panel-02" style="border:1px solid silver; min-height:20px; padding:5px ; margin:20px 0px">0</div>
+
+<script>
+(function() {  // IIFE
+	// Referenz auf as Ausgabe-Panel ermitteln
+	const panel = document.getElementById( "output-panel-02" );
+	// Load Event Handler beim OBJECT-Element registrieren
+	const o = document.getElementById( "obj-02" );
+	o.addEventListener( "load", function() {
+		// SVG-Document und CIRCLE Element ermitteln
+		const c = o.getSVGDocument().getElementById( "circle-01" );
+		// Kontrollausgabe
+		panel.innerHTML = c.toString() + "<br/>";
+		// Klick-Eventhandler beim CIRCLE-Element registrieren
+		c.addEventListener( "click", function() {
+			// Jeder Klick macht macht eine Ausgabe in das Panel
+			panel.innerHTML += "Klick!<br/>"
+			} ) ;
+		} ) ;
+	} ) ( ) ;  // Call the function above
+</script>
+
+<p>Wenn das obige Panel den Text "[object SVGCircleElement]" enthält, kann das Script in diesem Dokument auf den Inhalt des externen SVG-Documentes zugreifen. Ein Klick auf den Kresi ändert die Farbe &mdash; das macht das extere Script "image.js", das vom SVG-Dokument eingebunden wird. Siehe oben. Wird dann noch ein "Klick!"-Text in das Output Panel geschrieben, werden auch Events aus dem SVG-Dokument in dieses HTML-Dokument gesendet.</p>
+
+<p>Beides ist der Fall.</p>
+
+<p>Fazit: Ein Script in einem HTML-Dokument kann auf den Inhalt eines über ein OBJECT-Element eingebundenens SVG-Dokument lesend und schreibend zugreifen, und Events im SVG-Dokument können im HTML-Wrapper definierte Eventhandler zur Ausführung bringen.</p>
+
+<p>Damit steht dem Entwurf des Spielbretts in SVG nichts mehr im Wege.</p>
+
+<!--h2--></div>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

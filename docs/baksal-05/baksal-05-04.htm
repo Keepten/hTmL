@@ -1,0 +1,614 @@
+<!DOCTYPE html> 
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="USP" />
+<meta name="change-date" content="2022-11-07" />
+<meta name="version" content="1" />
+<meta name="description" content="Studien zur Enwicklung der Spiellogik." />
+
+<link rel="stylesheet" href = "../page.css" />
+
+<title>Baksal 05-04 - Studien zur Enwicklung der Spiellogik</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 05-04<br/>Studien zur Enwicklung der Spiellogik.</h1>
+
+
+<h2>State</h2><div>
+
+<p>Der Zustand des Spiels wird durch 2 Variablen definiert:</p>
+<ol>
+<li>Die Partei am Zug (Ziegen oder Löwen)</li>
+<li>Spielzug-Status (Auswahl des Tieres, Auswahl des Zielfeldes, Ausführung des Zuges)</li>
+</ol>
+
+<p>Nach jedem Zug ist die jeweils andere Partei am Zug.</p>
+
+<p>Der Ablauf des Spiels wird durch eine State Machine mit 2 &times; 3 &equals; 6 States realisiert.</p>
+
+<!-- h2 --></div>
+
+<h2 id="move-states">States eines Spielzuges</h2><div>
+
+<p>Ein Spielzug vollzieht sich in 3 Schritten oder Phasen. Im ersten Schritt selektiert der Spieler eine seiner Figuren für den Zug. Im zweiten Schritt wählt er das Zielfeld aus, wobei das Zielfeld gewissen Einschränkungen unterliegt. Im dritten Schritt schließt er den Zug durch Bestätigung des Zielfeldes ab. Dann kommt der Gegenspieler an die Reihe.</p>
+
+<p>Dieser Vorgang wird in Bild 2 verdeutlicht:</p>
+
+<figcaption id="fig-02">Bild 2: <a href="fig-002.svg" target="_blank">State Transition Diagramm</a></figcaption>
+<object id="obj-01" data="fig-002.svg" type="image/svg+xml" style="width:300px ; border:1px none silver"></object>
+
+<p>Im State 1 selektiert der Spieler eine seiner Figuren durch Klick für den Spielzug. Figuren des Gegners können nicht ausgewählt werden. Klicks auf leere Spielfelder haben keinen Effekt. Das Feld mit der selektierten Figur wird optisch hervorgehoben. Die für einen Zug in Frage kommenden Spielfelder werden markiert.</p>
+
+<p>Es findet ein Übergang zum State 2 über die Kante "animal selected" statt.</p>
+
+<p>Im State 2 selektiert der Spieler (normalerweise) ein leeres Spielfeld als Ziel des Spielzuges. Das Zielfeld wird optisch hervorgehoben, und es findet ein Übergang zum State 3 über die Kante "destination selected" statt.</p>
+
+<p>Klickt der Spieler jedoch stattdessen auf das Feld mit der selektiereten Figur, wird stattdessen die Figur deselektiert. Die Hervorhebung wird annulliert und es findet ein Übergang zum State 1 über die Kante "animal deselected" statt. Hinweis: Dieser Übergang wird wahrscheinlich nicht implementiert, da her vom folgenden Übergang abgedeckt ist.</p>
+
+<p>Klickt der Spieler auf eines seiner Tiere, wählt er dieses für den Spielzug aus. Die Hervorhebung des Spielfeldes eines eventuell vorher selektierten Tieres wird annulliert, und das Feld des neuen selektiereten Tieres wird hervorgehoben. Es erfolgt ein Übergang in den (gleichen) State 2 über die Kante "animal selected".</p>
+
+<p>Im State 3 sind beide Felder des Spielzuges hervorgehoben, Start und Ziel. Der Spieler kann die Szene in Ruhe analysieren. Entschließt sich der Spieler, das Zielfeld zu ändern, klickt er auf ein anderes Zielfeld. Die Hervorhebung des Feldes wird entsprechend angepasst. Es erfolgt dabei ein Übergang in den (gleichen) State 3 über die Kante "other destination selected".</p>
+
+<p>Entschließt er sich, das Tier für den Zug zu ändern, klickt er auf eines seiner Tiere, das Spielfeld wird entsprechend hervorgebohen. Die Auswahl des Zielfeldes und die Hervorhebung des entsprechenden Feldes werden annulliert. Es erfolgt dabei ein Übergang zum State 2 über die Kante "animal selected".</p>
+
+<p>Klickt er erneut auf das ausgewählte Zielfeld, akzeptiert er damit den konfigurierten Zug. Das selektierte Tier wird auf das Zielfeld verschoben. Ist das Tier ein Löwe und wird beim Zug eine Ziege übersprungen, wird die Ziege vom Spielfeld gelöscht.</p>
+
+<p>Nach dem Zug wird die Hervorhebung von Spielfeldern gelöscht, Selektionen werden annulliert, und die aktive Spielpartei gewechselt.</p>
+
+<p>Es erfolgt ein Übergang zum State 1 über die Kante "destination confirmed".</p>
+
+<!--h2--></div>
+
+<h2 cbc>Struktur des Codes</h2><div>
+
+<h3 cbc>Kapselung</h3><div>
+
+<p>SVG kennt (noch) keine <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">JavaScript Modules</a>, die in HTML einen einfachen, sicheren Import, Export und Kapselung von Code-Modulen (Komponenten) ermöglichen. Um zu vermeiden, dass Variablen und Funktionen der Spiellogik den Global Scope überfluten und verunreinigen, wird eine <em>Imediately Invoked Function Expression</em> eingesetzt, eine anonyme Funktion die nach dem Laden des Scriptes sofort aufgeführt wird.</p>
+
+<p>Alles, was innerhalb des Funktionsrumpfes platziert wird, also Variablen und Funktionen, ist <em>nicht von ausserhalb sichtbar</em> und kann daher nicht aus Versehen Elemente anderer Autoren und Bibliotheken überschreiben.</p>
+
+<pre>
+( function ( ) {  <cc>// IIFE, encapsulates the entire game logic</cc>
+      &vellip;
+    <cc>// implementation here</cc>
+      &vellip;
+    } ) ( ) ;  <cc>Execute immediately</cc>
+</pre>
+
+<p>Ebenso hat (fremder) Code ausserhalb dieser IIEF keinen Zugriff auf unsere Spiellogik und kann daher das Spiel nicht zerstören oder verfälschen.</p>
+
+<!--h3--></div>
+
+<h3 cbc>Geometrie-Definitionen</h3><div>
+
+<p>Zunächst wird die Geometrie des Spielfeldes und andere Randbedingungen festgelegt:</p>
+
+<pre>
+    <cc>// Spielfeldgeometrie</cc>
+
+const dx = dy = 40;  <cc>// Distance between fields</cc>
+const rows = columns = 5;
+const goats = 20;
+</pre>
+
+<p>In einer überarbeiteten Version wird aus diesen Daten das Spielfeld dynamisch generiert, möglicherweise mit abweichenden Einstellungen. Zur Zeit ist das Spielfeld in SVG hart codiert.</p>
+
+<!--h3--></div>
+
+<h3 cbc>Spielparteien</h3><div>
+
+<pre>
+    <cc> // Definition der Spielpartein</cc>
+
+const parties = {  
+    goat : 0 ,
+    lion : 1 ,
+    0 : "goat" ,
+    1 : "lion"
+    } ;
+
+let party = parties.goat;
+</pre>
+
+<p>Es gibt 2 Spielparteien, Löwen und Ziegen. <tt>Parties</tt> ist ein JavaScript-Objekt mit verschiedenen Membern. Es implementiert einen aus anderen Programmiersprachen bekannten <em>enum</em> Typ, der in JavaScript fehlt. Die Member des Objekts ordnen den Namen (goat, lion) numerische Werte (0 und 1) <em>bidirektional</em> zu und ermöglichen so die Verwendung von symbolischen Namen im Code anstelle von nichtssagenden Nummern. Ebenso wird eine Rückübersetzung von numerischen Werten in Strings ermöglicht.</p>
+
+<p>Die am Zug befindliche Partei wird in der Variablen <tt>party</tt> gespeichert. Sie enthält numerische Werte, 0 und 1. </p>
+
+<p>Man könnte zwar auch gleich die Strings hier Speichern, aber die Editoren unterstützen die Auswahl über Intellisense-Picklisten sehr gut und vermeiden so schwer zu findende Schreibfehler.</p>
+
+<!--h3--></div>
+
+<h3 cbc>Spielzug-States</h3><div>
+
+<p>Ein Spielzug läuft in 3 Phasen ab:</p>
+<ol>
+<li>Auswahl eines Tieres für den Zug</li>
+<li>Auswahl des Zielfeldes für den Sprung</li>
+<li>Bestätigung des Zielfeldes und Ausführung des Zuges</li>
+</ol>
+
+<p>Die Details haben wir bereits <a href="#move-states">weiter oben</a> erläutert.</p>
+
+<pre>		
+    <cc>// Definition der Spielzug States</cc>
+        
+const states = {
+    selectAnimal : 1 ,
+    selectDestination : 2 ,
+    confirmDestination : 3,
+    1 : "selectAnimal" ,
+    2 : "selectDestination" ,
+    3 : "confirmDestination"
+    } ;
+
+let stateOfMove = states.selectAnimal ;
+</pre>
+
+<p>Auch hier wird wieder eine Konstruktion verwendet, die einen Gebrauch wie Enum-Typen ermöglicht. Der Status wird in <tt>stateOfMove</tt> gespeichert. Bei Spielbeginn ist das "selectAnimal".</p>
+
+<!--h3--></div>
+
+<h3 cbc>Hilfsvariablen</h3><div>
+
+<p>Zur Unterstützung des Programmablaufs benötigen wird noch 2 Hilfsvariablen:</p>
+
+<pre>
+let selectedAnimalField = null ;
+let selectedDestinationField = null ;
+</pre>
+
+<p>Die erste speichert eine Referenz auf das TEXT-Element des für einen Zug ausgewählten Tieres. Die zweite Variable enthält eine Referenz auf das ausgewählte Zielfeld enes Zuges.</p>
+
+<!--h3--></div>
+
+<h3 cbc>Registrierung der Eventhandler</h3><div>
+
+<p>Am Ende der Datei werden die Event-Handler registriert:</p>
+
+<pre>
+    <cc>// Registrierung der Event Handler</cc>
+        
+document.getElementById( "goats" ).addEventListener( "click", function ( evt ) {
+    <cc>// Das group element #goats Löst nur TEXT-Element Events der Ziegen aus!</cc>
+    processEvent( findField( evt.target ), evt.target );
+    } ) ;
+        
+document.getElementById( "lions" ).addEventListener( "click", function ( evt ) {
+    <cc>// Das group element #lions Löst nur TEXT-Element Events der Löven aus!</cc>
+    processEvent( findField( evt.target ), evt.target );
+    } ) ;
+    
+document.getElementById( "field" ).addEventListener( "click", function( evt ) { 
+    <cc>// Klick-Events auf CIRCLEs </cc>
+    processEvent( evt.target, findAnimal( evt.target ) );
+    } ) ;
+</pre>
+
+<p>Hier werden drei Eventhandler beim Klick-Event verschiedener SVG-Gruppenelemente (G) registiert. Die Gruppen enthalten die Spielfelder (CIRCLEs) und Tiere (TEXT-Elemente). Ein Klick auf CIRCLEs und TEXT-Elemente <em>bubbelt</em> wie eine Luftblase aufwärts in der Baumstruktur des SVG-Documentes und kann von einem übergeordeneten Container-Element, hier die Gs, aufgefangen werden. Sind dort Event-Handler registriert, werden sie ausgeführt.</p>
+
+<p>Die Aufgabe dieser Eventhandler ist identisch</p>
+
+<ol>
+<li>Aufbereitung der Parameter</li>
+<li>Aufruf der Funktion <tt>processEvent</tt></li>
+</ol>
+
+<p>Durch den Registrierung der Eventhandler speichert das SVG-Element bzw drei seiner Child Nodes Referenzen auf die oben aufgeführten Funktionen. Diese wiederum referenzieren die Funktion <tt>processEvent</tt>. Diese Funktion referenzierte weitere Funktionen und die oben auf geführten Geometrie- und Statusvariablen. Diese <em>Referenzketten</em> halten die referenzierten Objekte und seinen Container, die äußere IIFE-Funktion, am Leben, solange das Root-Element SVG am Leben bleibt. Wird es aus dem Dokument gelöscht, verschwindet die gesamte Konstruktion aus dem Speicher.</p>
+
+<p>Eine solche Konstruktion nennt man <a href="https://de.wikipedia.org/wiki/Closure"><em>Closure</em></a>.</p>
+
+<!--h3--></div>
+
+<h3 cbc>processEvents</h3><div>
+
+<p>Das ist die zentrale, alles verarbeitende Funktion. Alle auftrendenden Events führen zur Ausführung dieser Funktion. Sie erwartet 2 Parameter:</p>
+
+<ul>
+<li>field &ndash; verweist auf das betroffene Spielfeld, ein CIRCLE-Element</li>
+<li>animal &ndash; verweist auf das betroffene Tier, ein TEXT-Element, sofern eines auf dem betroffenen Spielfeld steht.</li>
+</ul>
+
+<pre>
+function processEvent ( field, animal ) {
+    <cc>// Prevent clicks on other party's animals</cc>
+    if ( animal && ! field.classList.contains( parties[party] )) {
+        console.warn( "You cannot select the other party's animals!" );
+        return;
+        }
+    switch ( stateOfMove ) {
+    case states.selectAnimal :
+        <cc>&vellip;</cc>
+        break;
+    case states.selectDestination :
+        <cc>&vellip;</cc>
+        break;
+    case states.confirmDestination :
+        <cc>&vellip;</cc>
+        break;
+    }	}
+</pre>
+
+<p>Zunächst wird geprüft, ob es ein Tier gibt, und ob dieses Tier zur aktiven Spielpartei gehört. Wenn das nicht der Fall ist, gibt es eine Meldung auf der Konsole und die Ausführung wird beendet. Wenn nicht, werden die Parameter von der Switch-Anweisung verarbeitet. Man erkennt hier deutlich die drei Stati eines Spielzuges, selectAnimal, selectDestination und confirmDestination.</p>
+
+<p>Untersuchen wir den ersten Fall:</p>
+
+<pre>
+switch ( stateOfMove ) {
+case states.selectAnimal :
+    if ( animal ) {
+        selectAnimal( field );
+        stateOfMove = states.selectDestination ;
+        }
+    break;
+    <cc>&vellip;</cc>
+}	}
+</pre>
+
+<p>Wenn es ein Tier auf dem Feld gibt, wird es selektiert und es erfolgt eine Übergang in den State "selectDestination". Gibt es kein Tier, ändert sich nichts.</p>
+
+<p>Schauen wir, was beim nächsten Klick passiert.</p>
+
+<pre>
+switch ( stateOfMove ) {
+case states.selectDestination :
+    <cc>&vellip;</cc>
+    case states.selectDestination :
+        if ( animal ) selectAnimal( field );
+        else if ( selectDestination( field )) stateOfMove = states.confirmDestination ;
+        break;
+    <cc>&vellip;</cc>
+}   }
+</pre>
+
+<p>Wenn erneut auf ein [anderes] Tier geklickt wurde, wird dieses für den Spielzug ausgewählt. Anderenfalls wurde auf ein leeres Spielfeld geklickt, was dann als Ziel für den Zug ausgewählt wird. Falls möglich, denn der Spieler kann ja auf ein ungültiges Spielfeld klicken. Falls alles okay ist, erfolgt ein Übergang in den Zustand "confirmDestination".</p>
+
+<p>Jetzt wird's etwas komplizierter.</p>
+
+<pre>
+switch ( stateOfMove ) {
+<cc>&vellip;</cc>
+case states.confirmDestination :
+    if ( animal ) {
+        selectedDestinationField.classList.remove( "animalDestination" );
+        selectedDestinationField = null ;
+        selectAnimal( field );
+        stateOfMove = states.selectDestination ;
+        }
+    else if ( field !== selectedDestinationField ) 
+        selectDestination( field );
+    else {
+        executeMove( );
+        stateOfMove = states.selectAnimal;
+        party = ++ party % 2;
+        }
+    break;
+}   }
+</pre>
+
+<p>In diesem State soll das Zielfeld bestätigt und der Zug ausgeführt werden. Der Spieler kann aber statt dessen erneut auf eines seiner Tiere klicken und damit den Spielzug korrigieren. Dies wird dann als Tier für den Zug ausgewählt, wie oben. Zuvor müssen allerdings noch eine paar Markierungen entfernt werden, die mit der Auswahl des Zielfeldes erstellt wurden. Diese werden möglicherweise ungültig. Ausserdem erfolgt ein Übergang in den Zustand "selectAnimal".</p>
+
+<p>Ein weiterer Ausnahmefall tritt auf, wenn der Spieler auf ein <em>anderes</em> gültiges Zielfeld klickt. Es wird dann für den Spielzug selektiert, ansonsten ändert sich nichts.</p>
+
+<p>Der dritte Fall schließlich bestätigt das Zielfeld und führt zur Ausführung des Spielzuges durch die Funktion <tt>executeMove()</tt>. Des erfolgt danach ein Übergang in den Status "selectAnimal", und die Spielpartei wird gewechselt. Da <tt>party</tt> einen numerischen Wert enthält, kann das sehr elegant durch eine Inkrement- und Restdivisionsanweisung erledigt werden.</p>
+
+<p>Damit ist die Behandlung der Grundzüge der Spiellogik abgeschlossen.</p>
+
+<!--h3--></div>
+
+<!--h2--></div>
+
+<h2 cbc>Details</h2><div>
+
+<h3 cbc>SelectAnimal()</h3><div>
+
+<p>Diese Funktion wird im State 1 ("selectAnimal") ausgeführt, wenn der Spieler auf eines seiner Tiere klickt. Die Funktion prüft zunächst, ob bereits ein (anderes) Tier ausgewählt ist. Wenn das der Fall ist, wird die Auswahl annulliert. Dabei werden Klassenattribute von verschiedenen Spielfeldern entfernt. Deren Bedeutung wird im weiteren Verlauf noch genauer erläutert.</p>
+
+<pre>
+function selectAnimal( field ) {
+    if ( selectedAnimalField ) {
+        <cc>// Deselect any previously selected animal.</cc>
+        selectedAnimalField.classList.remove( "animalSelected" );
+        <cc>// Remove related valid destination attributes.</cc>
+        removeValidDestinationMarks( );
+        }
+    <cc>// Select new animal field</cc>
+    selectedAnimalField = field;
+    field.classList.add( "animalSelected" );
+    if ( field.parentNode.id === "goat-start-field" ) markEmptyFields( );
+    else markValidDestinations( field );
+    }
+</pre>
+
+<p>Im zweiten Teil wird die Selektion des Tieres durchgeführt. Es wird eine Referenz auf das Spielfeld in <tt>selectedAnimalField</tt> gespeichert. Anschliessend erhält es ein Klassenattribute "animalSelected". Dadurch wird das Spielfeld optisch hervorgehoben. Das erledigt eine CSS-Regel ohne weiteres Zutun im Hintergrund.</p>
+
+<p>Befindet sich das Tier außerhalt des Spielfeldes, ist es eine Ziege, und es kann auf alle freien Spielfelder des Spielbretts gesetzt werden. Anderenfalls befindet sich das Tier (Löwe oder Ziege) auf dem Spielfeld, und es werden die gültigen Zielfelder markiert. Das schauen wir uns jetzt mal an.</p>
+
+<!--h3--></div>
+
+<h3 cbc>markEmtpyFields()</h3><div>
+
+<p>Wie die nachfolgende Funktion <tt>markValidDestinations</tt>, markiert diese Funktion gültige Zielfelder, allerdings nur für Ziegen, die von ausserhalb auf das Spielfeld gesetzt werden. Dabei kommen alle leeren Spielfelder in Frage. Die Logik ist dadurch sehr einfach:</p>
+
+<pre>
+function markEmptyFields( ) {
+    <cc>// Called when a goat is about to enter the game field from outside.</cc>
+    let gameField = document.getElementById( "field" );
+    for ( let i = 0 ; i < gameField.children.length ; i ++ ) {
+        const field = gameField.children[ i ];
+        if ( field.classList.contains( "goat" )) continue;
+        if ( field.classList.contains( "lion" )) continue;
+        field.classList.add( "validDestination" ); 
+    }	}
+</pre>
+
+<p>Hier wird in einer Schleife über alle Felder des Spielbrettes iteriert. Enthält das Feld eine Ziege oder einen Löwen, kommt das Feld nicht in Frage. Anderenfalls wird es als "validDestination" markiert.</p>
+
+<p>Zu einem späteren Zeitpunkt wird diese Markierung getestet.</p>
+
+<!--h3--></div>
+
+<h3 cbc>markValidDestinations()</h3><div>
+
+<p>Diese Funktion ist, zugegeben, etwas komplex. Sie wird aufgerufen, wenn ein Tier auf dem Spielfeld für den Spielzug selektiert wurde und markiert die umliegenden gültigen Zielfelder. Diese Markierungen werden im folgenden Schritt ausgewertet und verhindern dort die Auswahl eines ungültigen Zielfeldes.</p>
+
+<p>Aber der Reihe nach. Einige Spielfelder erlauben Diagonalbewegungen, andere nicht. Die Linien auf dem Spielbrett zeigen die erlaubten Wege. Allerdings sind sie für eine Auswertung nicht besonders gut geeignet. Stattdessen werden die Koordinaten des Ausgangsfeldes numerisch ausgewertet:</p>
+
+<pre>
+function markValidDestinations ( field ) {
+    <cc>// Sets a "validDestination" attribute on neighbour fields
+    // Stores which goat to be killed when lion moves to the field</cc>
+    const fieldX = parseInt( field.getAttribute( "cx" ));
+    const fieldY = parseInt( field.getAttribute( "cy" ));
+    const canGoDiagonal = fieldX % (2 * dx) === 0 && fieldY % (2 * dy) === 0
+        || fieldX % (2 * dx) !== 0 && fieldY % (2 * dy) !== 0;
+    console.log ( "Field can go diagonal: " + canGoDiagonal );
+</pre>
+
+<p>Und zwar sind Diagonalen auf allen "geraden" Feldern erlaubt, nicht jedoch auf "ungeraden". Das machen wir uns zunutze. Dazu werden die Koordinaten des Feldes des ausgewählten Tieres (cx, cy) ausgelesen. Dabei werden die Strings in numerische Werte gewandelt, damit man mit ihnen rechnen kann.</p>
+
+<p>Die Prüfung auf gerade oder ungerade führt eine Restdivision (Modulus) durch 2 durch. Das Ergebnis ist dann 0 für gerade, und 1 für ungerade. Das Prinzip dürfte bekannt sein.</p>
+
+<p>Da die Koordinaten aber Vielfache von dx und dy sind, muss der Divisor auch mit dx bzw. dy multipliziert werden:</p>
+
+<pre>
+fieldX % (2 * dx) === 0
+fieldY % (2 * dy) === 0
+</pre>
+
+<p>Ein Feld is dann "gerade", wenn beide Koordinaten cx und cy gerade, oder wenn beide Koordinaten ungerade sind:</p>
+
+<pre>
+const canGoDiagonal = fieldX % (2 * dx) === 0 && fieldY % (2 * dy) === 0
+    || fieldX % (2 * dx) !== 0 && fieldY % (2 * dy) !== 0;
+</pre>
+
+<p>Das Ergebnis wird später zur Beurteilung der potentiellen Zielfelder herangezogen.</p>
+
+<p>Das Ausgangsfeld ist nun eingestuft worden, nun werden alle 8 Nachbarfelder um dieses Feld herum untersucht. Sie sind Kandidaten für ein mögliches Sprungziel. Die Prüfung wird in zwei verschachtelten Schleifen durchgeführt. Die Indexwerte i und j durchlaufen dabei die Werte &minus;1, 0 und &plus;1, was vorteilhaft für die Adressierung der benachbarten Felder verwerted werden kann.</p>
+
+<pre>    
+for ( let i = -1 ; i < 2 ; i ++ ) {
+    for ( let j = -1 ; j < 2 ; j ++ ) {
+        if ( i === 0 && j === 0 ) continue ;
+          <cc>&vellip;</cc>
+}   }   }
+</pre>
+
+<p>Dabei wird das Ausgangsfeld selbst (i=0, j=0) übersprungen. Das erledigt die <tt>continue</tt>-Anweisung.</p>
+
+<p>Die nächste Aktion in der Schleife prüft, ob das Zielfeld auf einer Diagonalen durch das Ausgangsfeld liegt. Das ist der Fall, wenn beide Indizes, i und j, ungleich null sind. Das ist für die Nachbarfelder oben links, oben rechts, unten links und unten rechts der Fall.</p>
+
+<p>Liegt das Zielfeld diagonal zum Ausgangsfeld, und erlaubt das Ausgangsfeld <em>keine</em> diagonale Bewegung, kommt das Spielfeld für eine Zug nicht in Frage:</p>
+
+<pre>
+const moveIsDiagonal = i !== 0 && j !== 0;
+if ( ! canGoDiagonal && moveIsDiagonal ) continue;
+</pre>
+
+<p>Die nächsten Anweisungen ermitteln eine Referenz auf das Zielfeld, ein CIRCLE-Element mit den passenden Koordinaten cx und cy:</p>
+
+<pre>
+const x = fieldX + j * dx ;
+const y = fieldY + i * dy ;
+const candidate = document.querySelector( `circle[cx="${x}"][cy="${y}"]` );
+if ( ! candidate ) continue ;
+</pre>
+
+<p>Wenn es nicht existiert, kann mit dem nächsten Kandidaten weitergemacht werden.</p>
+
+<p>Es kann vorkommen, dass die Berechnungen auch Felder aus dem Startbereich für die Ziegen erfassen. Die gehören allerdings nicht zum Spielfeld und werden übersprungen:</p>
+
+<pre>
+<cc>// Nur Spielfeld-Felder werde akzeptiert.</cc>
+if ( candidate.parentElement.id !== "field" ) continue;
+</pre>
+
+<p>Jetzt kann es vorkommen, dass das potentielle Zielfeld bereits besetzt ist. Ist ein Löwe darauf, kommt es nicht in Frage:</p>
+
+<pre>
+<cc>// Löwen können niemals übersprungen werden.</cc>
+if ( candidate.classList.contains( "lion" )) continue;
+</pre>
+
+<p>Jetzt ist das Feld entweder leer, oder es steht eine Ziege darauf:</p>
+
+<pre>
+<cc>// Leere Felder können immer als Zielfeld herhalten.</cc>
+if ( ! candidate.classList.contains( "goat" )) {
+    candidate.classList.add( "validDestination" ); 
+    continue;
+    }
+</pre>
+
+<p>Ist es leer, erhält das Feld das Klassenattribute "validDestination". Dann wird es von einem CSS-Selektor erfasst und optisch hervorgehoben.</p>
+
+<p>Jetzt bleibt nur noch der Fall, dass eine Ziege auf dem Feld steht. Löwen können Ziegen überspringen und fressen. Ziegen können das nicht, daher kommt das Zielfeld nicht für Ziegen in Frage:</p>
+
+<pre><cc>
+// Das Feld enthält eine Ziege
+// Ziegen können andere Ziegen nicht überspringen</cc>
+if ( party === parties.goat ) continue;
+</pre>
+
+<p>Aber, wie gesagt, Löwen können das. Dazu wird der Sprung "verlängert".</p>
+
+<pre><cc>
+// Löwen können Ziegen überspringen.
+// Zielfeld für den verlängerten Sprung ermitteln</cc>
+const candidate2 = document.querySelector( `circle[cx="${x + j * dx}"][cy="${y + i * dy}"]` );
+</pre>
+
+<p>Dazu werden die Indizes i und j sowie die Koordinaten des Ausgangsfeldes und die Feldabstände dx und dy benutzt, um die Koordinaten cx, cy des Sprungziels zu ermitteln:</p>
+
+<pre>
+x + j * dx
+y + i * dy
+</pre>
+
+<p>Mit diesen Ausdrücken und dem Wissen, dass wir nach CIRCLE-Elementen suchen kann man einen CSS-Selektorstring zusammenbauen. Er hat die Form</p>
+
+<pre>circle[cx="80"][cy="40"]</pre>
+
+<p>Man könnte die Koordinatenwerte berechnen und diesen Selektorstring auf traditionelle Weise zusammenbasteln. Allerdings, wo Heimwerker <em>basteln</em>, würden Inschinöre <em>konstruieren</em>. Und zwar ein sogenanntes "String Template", eine Zeichenkette, die <em>Platzhalter für Ausdrücke</em> enthält (${expression}). In diese Platzhalter muss man nur die Formeln eintragen, den Rest erledigt die JavaScript Engine des Browsers.</p>
+
+<p>So kann man nun den fertigen Selektor and <tt>document.querySelector()</tt> übergeben und erhält zur Belohnung das gesuchte potentielle Zielfeld <tt>candidate2</tt>.</p>
+
+<p>Das könnte allerdings gar nicht existieren, oder besetzt sein:</p>
+
+<pre>
+<cc>// Es könnte besetzt sein, dann kann der Löwe nicht springen.</cc>
+if ( ! candidate2 
+    || candidate2.classList.contains( "lion" ) 
+    || candidate2.classList.contains( "goat" )) 
+    continue ;
+</pre>
+
+<p>Wenn dem so ist, kann man den Schleifendurchlauf an dieser Stelle abbrechen mit einer <tt>continue</tt>-Anweisung.</p>
+
+<p>Wenn es aber frei ist, kann man es als gültiges Sprungziel einstufen:</p>
+
+<pre>
+<cc>// Es ist frei. </cc>
+candidate2.classList.add( "validDestination" ); 
+<cc>// Übersprungenes Feld mit der Ziege merken.
+// Bei Ausführung wird die Ziege gefressen.</cc>
+candidate2.setAttribute( "kills-goat-at", `${x},${y}` );
+}	}	}
+</pre>
+
+<p>Da wir wissen, dass dabei eine Ziege übersprungen wird, kann man ihre Koordinaten x und y auch gleich mit abspeichern &ndash; dann muss man sie später nicht mühsam rekonstruieren. Dazu wird ein Attribut "kills-goat-at" auf dem potentiellen Zielfeld CIRCLE-Element erstellt. Der Attributwert wird wieder elegant mit einem Template String zusammengestellt.</p>
+
+<p>Zusammenfassend bleibt festzuhalten, dass </p>
+
+<ul>
+<li>class="validDestination" ein gültiges Zielfeld markiert, und</li>
+<li>das Attribut kills-goat-at="x,y" die Koordinaten für die zu fressende Ziege enthält.</li>
+</ul>
+
+<!--h3--></div>
+
+<h3 cbc>selectDestination()</h3><div>
+
+<p>Diese Funktion wird ausgeführt, wenn sich der Spieler für ein Zielfeld entscheidet.</p>
+
+<p>Im vorigen Schritt wurden mit der Auswahl des Tieres die für dieses Tier gültigen Zielfelder markiert. Der Code muss daher lediglich diese Markierung prüfen:</p>
+
+<pre>
+function selectDestination( field ) {
+    <cc>// Markiert das ausgewählte Feld als Ziel, wenn es ein gültiges Ziel ist
+    // und liefert in diesem Fall true zurück.</cc>
+    if ( ! field.classList.contains( "validDestination" )) return false;
+    if ( selectedDestinationField ) selectedDestinationField.classList.remove( "animalDestination" );
+    field.classList.add( "animalDestination" );
+    selectedDestinationField = field;
+    removeValidDestinationMarks( field );
+    return true;
+    }
+</pre>
+
+<p>War vorher ein anderes Feld als Ziel markiert, wird dessen Markierung entfernt und beim neuen Zielfeld gesetzt. Eine Referenz auf das Feld wird in der Hilfsvariablen <tt>selectedDestinationField</tt> gespeichert.</p>
+
+<p>Zum Schluss werden noch die Markierungen für gültige Sprungziele entfert, damit sich wieder ein harmonisches Bild auf dem Schirm zeigt.</p>
+
+<!--h3--></div>
+
+<h3 cbc>removeValidDestinationMarks()</h3><div>
+
+<p>Diese Funktion entfernt die Markierungen der gültigen Zielfelder. Dazu wird die Methode <tt>querySelectorAll</tt> aufgerufen. Ihr wird ein CSS-Selektor übergeben, der alle CIRCLE-Elemente erfasst, die ein Klassenattribute "validDestination" haben:</p>
+
+<pre>
+function removeValidDestinationMarks( destinationField ) {
+    const fields = document.querySelectorAll( "circle.validDestination" );
+    for ( let i = 0 ; i < fields.length ; i ++ ) {
+        fields[ i ].classList.remove( "validDestination" );
+        if ( destinationField !== fields[ i ] ) fields[ i ].removeAttribute( "kills-goat-at" );
+    }	}
+</pre>
+
+<p>In der Schleife wird dieser Wert aus der Klassenliste entfernt. Gleichzeitig wird noch ein eventuell vorhandenes <tt>kills-goat-at</tt>-Attribut entfernt, sofern das Spielfeld nicht vorher als Sprungziel für den aktuellen Zug ausgewählt wurde.</p>
+
+<!--h3--></div>
+
+<h3>executeMove()</h3><div>
+
+<p>ExecuteMove schließt eine Spielzug ab. Die Spielfigur wird auf das auserkorene Zielfeld bewegt:</p>
+
+<pre>
+function executeMove ( ) {
+    const animal = findAnimal( selectedAnimalField );
+    animal.setAttribute( "x", selectedDestinationField.getAttribute( "cx" ));
+    animal.setAttribute( "y", selectedDestinationField.getAttribute( "cy" ));
+    selectedAnimalField.classList.remove( parties[ party ] );
+    selectedDestinationField.classList.add( parties[ party ] );
+</pre>
+
+<p>Die "Bewegung" geschieht durch Kopieren der Koordinatenwerte cx, cy des Zielfeldes in die Koordinatenwerte x, y der Spielfigur.</p>
+
+<p>Alle Hilfsmarkierungen werden entfernt:</p>
+
+<pre>
+    selectedAnimalField.classList.remove( "animalSelected" );
+    selectedDestinationField.classList.remove( "animalDestination" );
+</pre>
+
+<p>Dann wird geprüft, ob eine Ziege gefressen werden muss:</p>
+
+<pre>
+    <cc>// Eat a goat?</cc>
+    let killCoordinates = selectedDestinationField.getAttribute( "kills-goat-at" );
+    if ( killCoordinates ) {
+        killCoordinates = killCoordinates.split( "," );
+        selectedDestinationField.removeAttribute( "kills-goat-at" );
+</pre>
+
+<p>Falls ja, werden die Koordinaten extrahiert und das Hilfsattribute dafür wird gelöscht.</p>
+
+<p>Dann wird das entsprechende Feld mit Hilfe eines CSS-Selektors ermittelt und das Klassenattribut "goat" entfernt.</p>
+
+<pre>
+        const goatField = document.querySelector( `circle[cx="${killCoordinates[ 0 ]}"][cy="${killCoordinates[ 1 ]}"]` );
+        if ( goatField ) {
+            goatField.classList.remove( "goat" );
+            const goat = document.querySelector( `text[x="${killCoordinates[ 0 ]}"][y="${killCoordinates[ 1 ]}"]` );
+            if ( goat ) goat.remove( );
+        }	}
+    selectedAnimalField = selectedDestinationField = null ;
+    }
+</pre>
+
+<p>Auf die gleiche Weise wird die Spielfigur, ein TEXT-Element, ermittelt und aus dem Dokument gelöscht. Bleibt nur noch, die Hilfsvariablen zurückzusetzen. Damit ist der Zug abgeschlossen.</p>
+
+<!--h3--></div>
+
+<p>Das war (fast) die komplette Spiellogik. </p>
+
+<!--h2--></div>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

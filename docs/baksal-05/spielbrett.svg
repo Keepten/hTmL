@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-95 -95 190 360" xmlns="http://www.w3.org/2000/svg">
+
+<link rel="stylesheet" href="spielbrett.css" xmlns="http://www.w3.org/1999/xhtml"/>
+
+<g name="lines">
+	
+	<!-- Diagonals -->
+	
+	<line x1="-80"	x2="0"		y1="0"		y2="80" />
+	<line x1="-80"	x2="80"	y1="-80"	y2="80" />
+	<line x1="0"		x2="80"	y1="-80"	y2="0" />
+
+	<line x1="-80"	x2="0"		y1="0"		y2="-80" />
+	<line x1="-80"	x2="80"	y1="80"	y2="-80" />
+	<line x1="0"		x2="80"	y1="80"	y2="0" />
+
+	<!-- Horizontals -->
+
+	<line x1="-80"	x2="80"	y1="-80"	y2="-80" />
+	<line x1="-80"	x2="80"	y1="-40"	y2="-40" />
+	<line x1="-80"	x2="80"	y1="0"		y2="0" />
+	<line x1="-80"	x2="80"	y1="40"	y2="40" />
+	<line x1="-80"	x2="80"	y1="80"	y2="80" />
+
+	<!-- Verticals -->
+
+	<line x1="-80"	x2="-80"	y1="-80"	y2="80" />
+	<line x1="-40"	x2="-40"	y1="-80"	y2="80" />
+	<line x1="0"		x2="0"		y1="-80"	y2="80" />
+	<line x1="40"	x2="40"	y1="-80"	y2="80" />
+	<line x1="80"	x2="80"	y1="-80"	y2="80" />
+
+	</g>
+
+<g id="field" > <!-- Circles indicated the positions where animal can move to -->
+	
+	<!-- Row 1 -->
+
+	<circle	cx="-80"	cy="-80" class="lion" />
+	<circle	cx="-40"	cy="-80" />
+	<circle	cx="0"		cy="-80" />
+	<circle	cx="40"	cy="-80" />
+	<circle	cx="80"	cy="-80" class="lion" />
+	
+	<!-- Row 2 -->
+
+	<circle	cx="-80"	cy="-40" />
+	<circle	cx="-40"	cy="-40" />
+	<circle	cx="0"		cy="-40" />
+	<circle	cx="40"	cy="-40" />
+	<circle	cx="80"	cy="-40" />
+	
+	<!-- Row 3 -->
+
+	<circle	cx="-80"	cy="0" />
+	<circle	cx="-40"	cy="0" />
+	<circle	cx="0"		cy="0" />
+	<circle	cx="40"	cy="0" />
+	<circle	cx="80"	cy="0" />
+	
+	<!-- Row 4 -->
+
+	<circle	cx="-80"	cy="40" />
+	<circle	cx="-40"	cy="40" />
+	<circle	cx="0"		cy="40" />
+	<circle	cx="40"	cy="40" />
+	<circle	cx="80"	cy="40" />
+	
+	<!-- Row 5 -->
+
+	<circle	cx="-80"	cy="80" class="lion" />
+	<circle	cx="-40"	cy="80" />
+	<circle	cx="0"		cy="80" />
+	<circle	cx="40"	cy="80" />
+	<circle	cx="80"	cy="80" class="lion" />
+	</g>
+
+<g id="goat-start-field">
+
+	<!-- 20 fields outside the playing field for the goats -->
+
+	<circle	cx="-80"	cy="120" class="goat" />
+	<circle	cx="-40"	cy="120" class="goat" />
+	<circle	cx="0"		cy="120" class="goat" />
+	<circle	cx="40"	cy="120" class="goat" />
+	<circle	cx="80"	cy="120" class="goat" />
+
+	<circle	cx="-80"	cy="160" class="goat" />
+	<circle	cx="-40"	cy="160" class="goat" />
+	<circle	cx="0"		cy="160" class="goat" />
+	<circle	cx="40"	cy="160" class="goat" />
+	<circle	cx="80"	cy="160" class="goat" />
+
+	<circle	cx="-80"	cy="200" class="goat" />
+	<circle	cx="-40"	cy="200" class="goat" />
+	<circle	cx="0"		cy="200" class="goat" />
+	<circle	cx="40"	cy="200" class="goat" />
+	<circle	cx="80"	cy="200" class="goat" />
+
+	<circle	cx="-80"	cy="240" class="goat" />
+	<circle	cx="-40"	cy="240" class="goat" />
+	<circle	cx="0"		cy="240" class="goat" />
+	<circle	cx="40"	cy="240" class="goat" />
+	<circle	cx="80"	cy="240" class="goat" />
+	
+	</g>
+
+<g id="goats">
+	
+	<!-- 20 goats waiting to enter the playing field -->
+
+	<text	x="-80"	y="120" >G</text>
+	<text	x="-40"	y="120" >G</text>
+	<text	x="0"	y="120" >G</text>
+	<text	x="40"	y="120" >G</text>
+	<text	x="80"	y="120" >G</text>
+
+	<text	x="-80"	y="160" >G</text>
+	<text	x="-40"	y="160" >G</text>
+	<text	x="0"	y="160" >G</text>
+	<text	x="40"	y="160" >G</text>
+	<text	x="80"	y="160" >G</text>
+
+ 	<text	x="-80"	y="200" >G</text>
+	<text	x="-40"	y="200" >G</text>
+	<text	x="0"	y="200" >G</text>
+	<text	x="40"	y="200" >G</text>
+	<text	x="80"	y="200" >G</text>
+
+ 	<text	x="-80"	y="240" >G</text>
+	<text	x="-40"	y="240" >G</text>
+	<text	x="0"	y="240" >G</text>
+	<text	x="40"	y="240" >G</text>
+	<text	x="80"	y="240" >G</text>
+	</g>
+
+<g id="lions">
+
+	<!-- 4 Lions in the four corners of the playing field -->
+
+	<text x="-80" y="-80">L</text> 
+	<text x="80" y="-80">L</text> 
+	<text x="80" y="80">L</text> 
+	<text x="-80" y="80">L</text> 
+	</g>
+
+<script href="spielbrett.js"></script> <!-- contains the entire game logic -->
+</svg>

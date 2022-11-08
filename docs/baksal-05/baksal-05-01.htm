@@ -1,0 +1,243 @@
+<!DOCTYPE html> 
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="SKR" />
+<meta name="change-date" content="2022-11-02" />
+<meta name="version" content="1" />
+<meta name="description" content="Einbindung von SVG in HTML-Dokumente" />
+
+<link rel="stylesheet" href = "../page.css" />
+
+<title>Baksal 05-01 - Einbindung von SVG in HTML-Dokumente</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Baksal 05-01<br/>Einbindung von SVG in HTML-Dokumente</h1>
+
+<p>Ein tabellenbasiertes Spielbrett ist möglicherweise nicht die optimale Wahl: Einige Browser haben leichte Probleme bei der exakten Positionierung und/oder Dimensionierung der Zellen, was sich auf die Ausrichtung der Hintergrundbilder auswirkt. Bei einem kompletten Spielbrett auf der Basis von SVG tritt das Problem systembedingt nicht auf. Die auf einem TABLE-Element basierte Logik muss dann allerdings umgeschrieben werden.</p>
+
+<p>Das schauen wir uns später an. Erstellen wir erst einmal eine leere SVG-Datei:</p>
+
+
+<h2>Erste Schritte</h2><div>
+
+<figcaption>Listing 1: Definition des Koordinatensystems</figcaption>
+<pre>
+&lt;svg xmlns="http://www.w3.org/2000/svg" 
+    <hi>viewBox</hi>="-50 -50 100 100" &gt;
+&lt;/svg&gt;
+</pre>
+
+<p>SVG ähnelt in vielerlei Hinsicht HTML. Es gibt Elemente, sie können Attribute haben und mit CSS optisch gestaltet werden. Die Datei enthält ein momentan nur ein leeres SVG-Element. Das ist das sogenannte <i>Root-Element</i> und entspricht dem HTML-Element einer HTML-Datei.</p>
+
+<p>Dieses SVG-Element hat ein sehr wichtiges Attribut, <i>viewBox</i>, welches das Koordinatensystem definiert. Die Komponenten heißen x, y, w und h. Dabei legen x und y die Koordinatenwerte für die linke obere Ecke fest, w die Breite und h die Höhe des Bildes. Der Wertebereich für x und y ist also -50 bis +50, Breite und Höhe sind 100, der Ursprung (0, 0) liegt demnach in der Bildmitte.</p>
+
+<p>Wichtig zu wissen ist, dass Höhe und Breite des Koordinatensystems <em>nicht</em> der Breite und Höhe des SVG-Elementes, also der Größe des Bildes, entsprechen. Die muss mit den <tt>width</tt> und <tt>height</tt> Attributen oder mit CSS Styles des einbettenden HTML-Elementes gemacht werden. Dazu gleich mehr.</p>
+
+<p>Während der Entwicklung der Verktorgrafik kann man den Browser als Viewer einsetzen und bei Bedarf die Seite neu laden, um Änderungen zu begutachten. Etwa einen Kreis im Zentrum:</p>
+
+<figcaption>Listing 2: Ein Kreis in der Mitte</figcaption>
+<pre>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100" &gt;
+&lt;<hi>circle</hi> cx="0" cy="0" r="10" stroke="black" stroke-width="1" fill="white" /&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Das schauen wir uns mal im Browser an:</p>
+
+<p><a href="image-01.svg" target="_blank">image-01.svg</a></p>
+
+<p>Wie man sieht, skaliert der Browser das Bild auf maximale Größe. Das könnte verwirren. Deswegen setzen wir <tt>width</tt> und <tt>height</tt>-Attribute, und fügen gleich noch einen Rahmen hinzu, um die Grenzen des Koorinatensystems zu sehen:</p>
+
+<figcaption>Listing 3: Breite und Höhe auf dem SVG Element</figcaption>
+<pre>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"
+    <hi>width</hi>="100" <hi>height</hi>="100" 
+    style="<hi>border</hi> : 1px solid silver" &gt;
+&lt;circle cx="0" cy="0" r="10" stroke="black" stroke-width="1" fill="white" /&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Die Width- und Height-Werte werden aus dem <tt>viewBox</tt>-Attribut übernommen, um eine 1:1-Darstellung zu bekommen:</p>
+
+<p><a href="image-02.svg" target="_blank">image-02.svg</a></p>
+
+<p>Das sieht schon besser aus.</p>
+
+<p>Da SVG-Bilder normalerweise mit einem konstanten Seitenverhältnis von 1:1 skaliert werden, würde eine einzelne Angabe, width <em>oder</em> height, vollkommen genügen. Wichtig ist nur, dass Anpassungen der Größe des Koordinatensystem auch immer in das <tt>width</tt> oder <tt>height</tt>-Attribut übernommen werden.</p>
+
+<!-- h2 --></div>
+
+<h2>Einbindung in eine HTML-Datei</h2><div>
+
+<p>Man kann diese externe Bild-Datei auf verschiedene Weise in einer HTML-Datei einbinden. Jede Methode hat so ihre eigenen Vor- und Nachteile. </p>
+
+<h3>Einbindung als Bild</h3><div>
+
+<p>Die einfachste Methode ist die Einbindung als einfaches <em>Bild</em>. Etwa über CSS als Hintergrundbild, wie wir es schon mit Tabellenzellen gemacht haben, oder mit dem IMG-Element, das auch andere Bildformate laden und darstellen kann:</p>
+
+<figcaption>Listing 4: Einbindung in eine HTML-Date</figcaption>
+<pre>
+&lt;img src="image-02.svg" /&gt;
+</pre>
+
+<p>Das sieht dann so aus:</p>
+
+<figcaption>image-02.svg</figcaption>
+<img src="image-02.svg" width="110" />
+
+<p>Da fehlt doch glatt der rechte und untere Rand?! Den hatten wir doch vorher schon im Browers?? Da das verwirrt, und da der Rand in die SVG-Datei auch nur zu Testzwecken während der Designphase benötigt wird, setzen wir dort den Border Style auf "none" und definieren einen Border Style auf dem IMG-Element in der HTML-Datei. Falls wir ihn später noch mal brauchen, müssen wir ihn nur zurück auf "solid" setzen:</p>
+
+<figcaption>Listing 5: Border Style "none"</figcaption>
+<pre>
+&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100"
+    <hi>xwidth</hi>="100"
+    style="border : 1px <hi>none</hi> silver" &gt;
+&lt;circle cx="0" cy="0" r="10" stroke="black" stroke-width="1" fill="white" /&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Statt dessen könnte man die Border-Definition auch aus der SVG-Datei löschen und in das IMG-Element in der HTML-Datei verschieben.</p>
+
+<p>Da die Größe des Bildes in einer HTML-Datei durch seinen Container, in diesem Fall das IMG-Element, bestimmt wird, könnten die <tt>width</tt> und <tt>height</tt>-Attribute eigentlich vom SVG-Element auf das IMG-Element verschoben werden. Allerdings ändert sich die Größe der Grafik während der Entwicklung ständig. Daher ist es besser, diese Attribute zunächst nicht auf dem IMG-Container zu definieren. Ist die Entwicklung abgeschlossen, definiert man Breite und Höhe auf dem Image Container so wie es der Kontext erfordert. Width und Height-Attribute auf dem SVG-Element werden dann ignoriert. Oder man wandelt den Namen der Attribute etwas ab, so dass es nicht mehr erkannt wird, wie oben gezeigt. Das spart möglicherweise eine (überflüssige) Skalierungsoperation.</p>
+
+<p>Und so wird's gemacht:</p>
+
+<figcaption>Listing 6: Der Image Container bestimmt die Größe</figcaption>
+<pre>
+&lt;img src="image-02.svg" style="<hi>width</hi>:100px" /&gt;
+</pre>
+
+<p>Auch die Umrandung kann hier festgelegt werden:</p>
+
+<figcaption>Listing 7: Rand hinzugefügt</figcaption>
+<pre>
+&lt;img src="image-02.svg"
+    style="width:100px ; <hi>border</hi>:1px solid silver" /&gt;
+</pre>
+
+<p class="note">Hinweis: Definition von Styles direkt auf einem HTML-Element, sogenannte <i>inline</i>-Styles, sollten besser in einer externen CSS-Datei definiert werden. Inline-Styles werden hier nur der Verdeutlichung wegen verwendet.</p>
+
+<p>Und so sieht's dann aus:</p>
+
+<figcaption>image-03.svg</figcaption>
+<img src="image-03.svg" style="width: 100px ; border: 1px solid silver" />
+
+<p>Vor- und Nachteile der Einbingung über IMG:</p>
+
+<ul>
+<li pro>Einfach zu benutzen, wie andere Bildformate</li>
+<li con>SVG-Datei kann keine externen Resourcen nutzen. Styles und Schriftarten müssen eingebettet werden.</li>
+<li con>Auf Elemente in der SVG-Datei kann nicht über Scripte zugegriffen werden.</li>
+</ul>
+
+<!-- h3 --></div>
+
+<h3>Einbindung über OBJECT</h3><div>
+
+<p>Die Einbindung der SVG-Grafik über ein OBJECT-Element geht so:</p>
+
+<figcaption>Listing 8: Einbindung über ein OBJECT</figcaption>
+<pre>
+&lt;object data="image-04.svg" type="image/svg+xml"
+    style="width:100px ; border:1px solid silver"&gt;
+    &lt;/object&gt;
+</pre>
+
+<p>Ergebnis:</p>
+
+<figcaption>image-04.svg</figcaption>
+<object id="obj-01" data="image-04.svg" type="image/svg+xml" style="width:100px ; border:1px solid silver"></object>
+
+<p>Sieht genau so aus wie über IMG eingebunden, aber es gibt Unterschiede:</p>
+
+
+<ul>
+<li pro>Relativ einfach zu benutzen, änhlich wie IMG</li>
+<li pro>Erlaubt Fallback zu IMG für Browser die SVG nicht unterstützen. Was aber heutzutage kaum noch der Fall sein dürfte.</li>
+<li pro>Eine SVG-Datei kann externen Resourcen einbinden, insbesondere CSS, Fonts und andere SVG-Dateien.</li>
+<li pro>Auf alle Elemente in der SVG-Datei kann über Scripte zugegriffen werden.</li>
+<li con>Einbindung über OBJECT ist nicht im W3C-Standard spezifiziert, obwohl praktisch alle Browser diese Methode unterstützen.</li>
+<li con>Auf die SVG-Elemente kann erst zugegriffen werden, nachdem sie vollständig geladen wurden. Initialisierungscode muss daher in den OBJECT <tt>load</tt> event handler platziert werden.</li>
+</ul>
+
+<!-- h3 --></div>
+
+<h3>Direkte Einbettung in den HTML Code</h3><div>
+
+<p>SVG code ist XML und kann daher <em>direkt</em> in HTML code eingebettet werden. Allerdings muss die SVG-DOCTYPE-Deklaration weggelassen werden. Ebenso kann das XML Namespace-Attribut entfallen.</p>
+
+<pre>
+&lt;body&gt;
+...
+&lt;<hi>svg</hi> id="svg-01"
+    viewBox="-50 -50 100 100" 
+    style="border:1px solid silver; width:100px" &gt;
+    &lt;circle cx="0" cy="0" r="10" /&gt;
+    &lt;/svg&gt;
+...
+&lt;/body&gt;
+</pre>
+
+<p>In die HTML-Datei direkt oder über LINK eingebettete Stylesheets wirken direkt auf SVG-Elemente:</p>
+
+<pre>
+&lt;body&gt;
+...
+&lt;style&gt;
+svg#svg-01 circle {
+    fill : limegreen ;
+    stroke : black ;
+    stroke-width : 2px ;
+    }
+&lt;/style&gt;
+...
+&lt;<hi>svg</hi> id="svg-01"
+    viewBox="-50 -50 100 100" 
+    style="border:1px solid silver; width:100px" &gt;
+    &lt;circle cx="0" cy="0" r="10" /&gt;
+    &lt;/svg&gt;
+...
+&lt;/body&gt;
+</pre>
+
+<p class="note">Notiz am Rande: Werden SVG Grafik-Elemente mit <tt>stroke</tt>- und <tt>fill</tt>-Attributen formatiert, ist die Standardfarbe <em>schwarz</em>. Sobald mit CSS formatiert wird, ist die Standardfarbe <em>weiß</em>. Das kann zu Überraschungen führen, denn weiße Linien auf weißem Grund&hellip;</p>
+
+<p>Hier sieht man das Ergebnis:</p>
+
+<style>
+svg#svg-01 circle {
+	fill : limegreen ;
+	stroke : black ;
+	stroke-width : 2px ;
+	}
+</style>
+
+<figcaption>Bild 4: Direkt eingebundenes SVG</figcaption>
+<svg id="svg-01" viewBox="-50 -50 100 100" style="border:1px solid silver ; width:100px"  >
+<circle cx="0" cy="0" r="10" />
+</svg>
+
+<p>Vor- und Nachteile:</p>
+
+<ul>
+<li pro>Voller Zugriff auf SVG-Elemente</li>
+<li pro>Kein zusätzlicher Round-Trip zum Server um die Grafik zu laden</li>
+<li con>Der SVG-Code kann nicht wiederverwendet werden.</li>
+</ul>
+
+<!--h3--></div>
+
+<p>Nun haben wir eine Übersicht über die Integrationsmöglichkeiten und deren Vor- und Nachteile. Da das Spielbrett nur einmal auf der Seite vorkommt bietet sich eigentlich eine direkte Einbettung in den HTML code an. Andererseits werden wir aber auch eine Spieldokumentation schreiben, in der das Spielbrett sicherlich in mehreren Varianten dargestellt werden muss. Daher ist die Einbindung als externe Ressource über ein OBJECT-Element die richtige Wahl.</p>
+
+<!-- h2 --></div>
+
+<p>In nächsten Abschnitt werden wir uns näher mit externen SVG-Documenten beschäftigen, die über ein OBJECT-Element eingebunden werden.</p>
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

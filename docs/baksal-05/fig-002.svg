@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-150 -80 360 610" width="360" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+	circle { stroke-width : 2px ; fill : white ; r : 60 }
+	marker { fill : context-stroke ; stroke-linecap : round }
+	path { stroke : black ; stroke-width : 2px ; fill : none }
+	rect { stroke : black ; stroke-width : 2px ; fill : white }
+	text { fill : black ; text-anchor : middle ; alignment-baseline : central ; font-size : 18px }
+	#arrow path  { fill : black }
+	.transition rect { stroke : none ; fill : white } 
+	.transition.dropped path { stroke : silver }
+	.state-number { font-size : 30px ; fill : clear }
+	#select-animal circle { stroke : MediumSeaGreen }
+	#select-animal text.state-number { fill : SeaGreen }
+	#select-destination circle { stroke : Orange }
+	#select-destination text.state-number { fill : DarkOrange }
+	#confirm-destination circle { stroke : MediumPurple }
+	#confirm-destination text.state-number { fill : DarkOrchid }
+
+	</style>
+
+<marker id="arrow" viewBox="-2 -2 19 12" refX="15" refY="4" markerUnits="userSpaceOnUse" markerWidth="19" markerHeight="12" orient="auto-start-reverse">
+	<path d="M 0 0 L 15 4 L 0 8 z"/>
+	</marker>
+<!-- States -->
+
+<g id="select-animal" transform="translate( 0, 0 )">
+	<circle cx="0" cy="0" />
+	<text class="state-number" x="0" y="-27">1</text>
+	<text x="0" y="7">
+		<tspan x="0" dy="0em">Select</tspan>
+		<tspan x="0" dy="1.2em">Animal</tspan>
+		</text>
+	</g>
+
+<g id="select-destination" transform="translate( 0, 200 )">
+	<circle cx="0" cy="0" />
+	<text class="state-number" x="0" y="-27">2</text>
+	<text x="0" y="7">
+		<tspan x="0" dy="0em">Select</tspan>
+		<tspan x="0" dy="1.2em">Destination</tspan>
+		</text>
+	</g>
+
+<g id="confirm-destination" transform="translate( 0, 400 )">
+	<circle cx="0" cy="0" />
+	<text class="state-number" x="0" y="-27">3</text>
+	<text x="0" y="7">
+		<tspan x="0" dy="0em">Confirm</tspan>
+		<tspan x="0" dy="1.2em">Destination</tspan>
+		</text>
+	</g>
+
+<!-- Transitions -->
+
+<g id="animal-selected" class="transition" transform="translate( 0, 60 )">
+	<path z="s" d="m 0 0 v 78" marker-end="url(#arrow)" />
+	<g>
+		<rect x="-30" y="15" width="60" height="32" />
+		<text y="30">
+			<tspan x="0" dy="0">animal</tspan>
+			<tspan x="0" dy="15">selected</tspan>
+			</text>
+		</g>
+	</g>
+
+<g id="animal-deselected" class="transition dropped" transform="translate( -60, 0 )">
+	<path z="s" d="m -2 0 h -30 a 20 20 90 0 0 -20 20 v 140 a 20 20 90 0 0 20 20 h 34" marker-start="url(#arrow)" />
+	<g transform="translate( -50, 90 )">
+		<rect x="-30" y="-15" width="60" height="32" />
+		<text y="0">
+			<tspan x="0" dy="0">animal</tspan>
+			<tspan x="0" dy="15">deselected</tspan>
+			</text>
+		</g>
+	</g>
+<g id="other-animal-selected" class="transition" transform="translate( 45, 160 )">
+	<path z="s" d="m 0 0 h 50 a 20 20 90 0 1 20 20 v 40 a 20 20 90 0 1 -20 20 h -50" marker-start="url(#arrow)" />
+	<g transform="translate( 70, 40 )">
+		<rect x="-30" y="-15" width="60" height="32" />
+		<text y="0">
+			<tspan x="0" dy="0">animal</tspan>
+			<tspan x="0" dy="15">selected</tspan>
+			</text>
+		</g>
+	</g>
+
+<g id="animal-selected" class="transition" transform="translate( -60, 220 )">
+	<path z="s" d="m 0 0 h -30 a 20 20 90 0 0 -20 20 v 130 a 20 20 90 0 0 20 20 h 31" marker-start="url(#arrow)" />
+	<g transform="translate( -50, 90 )">
+		<rect x="-30" y="-15" width="60" height="32" />
+		<text y="0">
+			<tspan x="0" dy="0">animal</tspan>
+			<tspan x="0" dy="15">selected</tspan>
+			</text>
+		</g>
+	</g>
+
+<g id="destination-confirmed" class="transition" transform="translate( 60, 0 )">
+	<path z="s" d="m 2 0 h 90 a 20 20 90 0 1 20 20 v 350 a 20 20 90 0 1 -20 20 h -92" marker-start="url(#arrow)" />
+	<g transform="translate( 100, 300 )">
+		<rect x="-30" y="-15" width="60" height="32" />
+		<text y="0">
+			<tspan x="0" dy="0">destination</tspan>
+			<tspan x="0" dy="15">confirmed</tspan>
+			</text>
+		</g>
+	</g>
+
+<g id="destination-selected" class="transition" transform="translate( 0, 260 )">
+	<path z="s" d="m 0 0 v 78" marker-end="url(#arrow)" />
+	<g>
+		<rect x="-30" y="15" width="60" height="32" />
+		<text y="30">
+			<tspan x="0" dy="0">destination</tspan>
+			<tspan x="0" dy="15">selected</tspan>
+			</text>
+		</g>
+	</g>
+
+<g id="other-destination-selected" class="transition" transform="translate( 0, 430 )">
+	<path z="s" d="m 52 0 h 40 a 20 20 90 0 1 20 20 v 30 a 20 20 90 0 1 -20 20 h -180 a 20 20 90 0 1 -20 -20 v -30 a 20 20 90 0 1 20 -20 h 32" marker-end="url(#arrow)" />
+	<g display="block"  transform="translate( 0, 40 )">
+		<rect x="-45" y="15" width="90" height="40" />
+		<text y="20">
+			<tspan x="0" dy="0">other</tspan>
+			<tspan x="0" dy="15" dx="2">destination</tspan>
+			<tspan x="0" dy="15">selected</tspan>
+			</text>
+		</g>
+	</g>
+
+</svg>

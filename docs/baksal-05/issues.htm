@@ -1,0 +1,57 @@
+<!DOCTYPE html> 
+<html lang="de-DE"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="USP" />
+<meta name="change-date" content="2022-11-08" />
+<meta name="editor" content="USP" />
+<meta name="version" content="1" />
+<meta name="description" content="Issues on the Bagh Chal game." />
+
+<link rel="stylesheet" href = "../page.css" />
+
+<title>Bagh Chal - Issues</title>	<!-- Titel wird im Browser Tab angezeigt -->
+
+</head><body> 
+
+<nav> <a href="../index.htm">Inhaltsverzeichnis</a> </nav>
+
+<h1>Bagh Chal<br/>Issues</h1>
+
+<h2 cbc>Open Issues</h2><div>
+
+<dl class="issue-list">
+
+<dt id="i-1">#1&ensp;Zielfeld eines Spielzuges kann nicht korrigiert werden.</dt>
+<dd><span class="detected">2022-11-08 USP</span></dd>
+<dd>Das <a href="fig-002.svg">State Transition Diagramm</a> gibt im State 3 vor, dass das Zielfeld korrigiert werden kann (Kante "other destination selected"). Das funktioniert nicht.</dd>
+<dd><em>Ursache</em>: Die Markierung der gültigen Zielfelder ( Class Name "valdiDestination") wird bei der Auswahl des Zielfeldes (State 2, destination selected) gelöscht. Dadurch werden diese Felder nicht mehr als gültiges Zielfeld akzeptiert.</dd>
+<dd><em>Workaround</em>: Man kann das ausgewählte Tier anklicken (State 3, "animal selected"), dann werden die Markierungen erneut gesetzt.</dd>
+<dd><em>Lösungsvorschlag 1</em>: Einführung eines neuen CSS Class Attributes "highlightDestination", das mit dem Attribute "validDestination" gesetzt und mit der Auswahl eines Zielfeldes gelöscht wird. Das Attribut steuert über CSS die optische Hervorhebung der möglichen Zielfelder.</dd>
+<dd><em>Lösungsvorschlag 2</em>: Die Option "other destination selected" in State 3 wird ersatzlos entfernt.</dd>
+
+<dt>Test</dt>
+
+</dl>
+
+
+<!--h2--></div>
+
+
+<h2 cbc>Assigned Issues</h2><div>
+
+
+
+<!--h2--></div>
+
+<h2 cbc>Closed Issues</h2><div>
+
+
+
+<!--h2--></div>
+
+
+<footer><a href="../index.htm">Inhaltsverzeichnis</a></footer>
+
+</body></html>

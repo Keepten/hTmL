@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-60 -10 400 460" width="400" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+	rect { stroke: black ; stroke-width: 2px ; fill: white }
+	rect.element { stroke-width : 1px }
+	line { stroke: black ; stroke-width: 1px }
+	marker { stroke : none };
+	path { stroke: black }
+	text { text-anchor : middle }
+	.external-reference { stroke : black ; stroke-width : 1px }
+	.event { stroke : darkorange ; stroke-width : 2px }
+	#event-arrow { fill : darkorange }
+	.element-access { stroke : green ; stroke-width : 2px }
+	#element-access-arrow { fill : green }
+	.dysfunct { stroke-dasharray : 3 3 }
+	.styling { stroke : darkviolet ; fill:none ; stroke-width : 2px }
+	#styling-arrow { fill : darkviolet ; }
+	</style>
+
+<marker id="reference-arrow" viewBox="0 0 10 4" refX="10" refY="3" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="8" orient="auto-start-reverse">
+	<path d="M 0 0 L 10 3 L 0 6 z" fill="black"  stroke-width="0" />
+	</marker>
+<marker id="event-arrow" viewBox="0 0 10 4" refX="10" refY="3" markerUnits="userSpaceOnUse " markerWidth="6" markerHeight="4" orient="auto-start-reverse">
+	<path d="M 0 0 L 10 3 L 0 6 z" stroke-width="0" />
+	</marker>
+<marker id="element-access-arrow" viewBox="0 0 10 4" refX="10" refY="3" markerUnits="userSpaceOnUse " markerWidth="6" markerHeight="4" orient="auto-start-reverse">
+	<path d="M 0 0 L 10 3 L 0 6 z" stroke-width="0" />
+	</marker>	
+<marker id="styling-arrow" viewBox="0 0 10 4" refX="10" refY="3" markerUnits="userSpaceOnUse " markerWidth="6" markerHeight="4" orient="auto-start-reverse">
+	<path d="M 0 0 L 10 3 L 0 6 z" />
+	</marker>	
+<!-- Drawing starts here -->
+
+<g id="page.htm" transform="translate( 0, 0 )">
+	<rect x="-50" y="-1" width="110" height="440" />
+	<text x="0" y="25">HTML</text>
+	<text x="0" y="50">page.htm</text>
+	<g  name="link" transform="translate( 0, 70 )">
+		<rect class="element" x="-35" y="0" width="70" height="30" />
+		<text x="0" y="20">LINK</text>
+		<line x1="35" y1="15" x2="90" y2="15" marker-end="url(#reference-arrow)" />
+		</g>
+	<g name="script"  transform="translate( 0, 130 )">
+		<rect class="element" x="-35" y="0" width="70" height="30" />
+		<text x="0" y="20">SCRIPT</text>
+		<line x1="35" y1="15" x2="90" y2="15" marker-end="url(#reference-arrow)" />
+		</g>
+	<g name="object"  transform="translate( 0, 210 )">
+		<rect class="element" x="-35" y="0" width="70" height="30" />
+		<text x="0" y="20">OBJECT</text>
+		<line x1="35" y1="15" x2="90" y2="15" marker-end="url(#reference-arrow)" />
+		</g>
+	<g name="script"  transform="translate( 0, 270 )">f
+		<rect class="element" x="-35" y="0" width="70" height="60" />
+		<text x="0" y="35">SCRIPT</text>
+		<line class="event" x1="90" y1="20" x2="35" y2="20" marker-end="url(#event-arrow)" />
+		<line class="element-access" x1="90" y1="40" x2="35" y2="40" marker-start="url(#element-access-arrow)" marker-end="url(#element-access-arrow)" />
+	</g></g> <!-- HTML Document -->
+
+<g id="page.css" transform="translate( 140, 40 )">
+	<rect x="-50" y="-1" width="110" height="60" />
+	<text x="0" y="25">CSS</text>
+	<text x="0" y="45">page.css</text>
+	<path class="styling" stroke="violet" d="M -50 20 h -30" marker-end="url(#styling-arrow)"/>
+	</g> <!-- CSS Document -->
+
+<g id="page.js" transform="translate( 140, 120 )">
+	<rect x="-50" y="-1" width="110" height="60" />
+	<text x="0" y="25">JavaScript</text>
+	<text x="0" y="45">page.js</text>
+	</g> <!-- JS Document -->
+
+<g id="image.svg" transform="translate( 140, 200 )">
+	<rect x="-50" y="-1" width="110" height="240" />
+	<text x="0" y="25">SVG</text>
+	<text x="0" y="45">image.svg</text>
+	<g name="arrows">
+		<path class="event" d="M 60 20 h 20 a 10 10 90 0 0 10 -10 v -40 a 10 10 90 0 0 -10 -10 h -20" fill="none" marker-end="url(#event-arrow)" />
+		<path class="element-access" d="M 60 40 h 20 a 30 30 90 0 0 30 -30 v -40 a 30 30 90 0 0 -30 -30 h -20" fill="none" marker-start="url(#element-access-arrow)" marker-end="url(#element-access-arrow)" />
+		<path class="styling dysfunct" stroke="violet" d="M 60 60 h 20 a 50 50 90 0 0 50 -50 v -100 a 50 50 90 0 0 -50 -50 h -20" marker-start="url(#styling-arrow)"/>
+		<path class="styling" d="M 60 100 h 50" marker-start="url(#styling-arrow)" />
+		</g>
+	<g name="link" transform="translate( 0, 70 )">
+		<rect class="element" x="-30" y="0" width="60" height="30" />
+		<text x="0" y="20">LINK</text>
+		<line x1="30" y1="15" x2="110" y2="15" marker-end="url(#reference-arrow)" />
+		</g> 
+	<g name="script" transform="translate( 0, 145 )">
+		<rect class="element" x="-30" y="0" width="60" height="80" />
+		<text x="0" y="40">SCRIPT</text>
+		<line x1="30" y1="20" x2="110" y2="20" marker-end="url(#reference-arrow)" />
+		<line class="event" x1="30" y1="40" x2="110" y2="40" marker-start="url(#event-arrow)" />
+		<line class="element-access" x1="30" y1="60" x2="110" y2="60" marker-start="url(#element-access-arrow)" marker-end="url(#element-access-arrow)" />
+		</g> 
+	</g> <!-- SVG Document -->
+
+<g id="image.css" transform="translate( 290, 270 )">
+<rect x="-40" y="-1" width="80" height="60" />
+<text x="0" y="25">CSS</text>
+<text x="0" y="45">image.css</text>
+</g> <!-- CSS Document -->
+
+<g id="image.js" transform="translate( 290, 350 )">
+	<rect x="-40" y="-1" width="80" height="70" />
+	<text x="0" y="25">JavaScript</text>
+	<text x="0" y="45">image.js</text>
+	</g> <!-- JS Document -->
+
+</svg>

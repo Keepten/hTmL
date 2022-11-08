@@ -1,0 +1,20 @@
+/*  spielbrett.css 
+ *  Styles für das Spielbrett
+ */
+
+ circle {
+	stroke : grey ;
+	stroke-width : 2px ;
+	fill : lightsalmon ;
+	}
+
+line {
+	stroke : black ;
+	stroke-width : 2px ;
+	}
+
+text {
+	text-anchor : middle ;
+	font-family : 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif ;
+	font-size : 16px ;
+	}
