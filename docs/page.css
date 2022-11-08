@@ -3,6 +3,31 @@
  * Grundstile fuer alle Webseiten
  */ 
 
+.button {
+	display : inline-block ;
+	border : 2px solid navy ;
+	padding : 5px ;
+	margin-top : 20px ;
+	margin-bottom : 20px ;
+	background-color : lightsteelblue ;
+	border-radius : 8px ;
+	}
+
+.button:hover { 
+	border-color : darkorange ;
+	}
+
+.button:active {
+	background-color : orange ;
+	}
+
+.note {
+	border-left : 5px dotted orange;
+	margin : 30px ;
+	margin-left : 5px ;
+	padding-left : 10px ;
+	}
+	
 body { 
 	font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif ; 
 	line-height : 150% ;
@@ -11,7 +36,22 @@ body {
 	padding-bottom : 40px ;
 	}
 
+cc { color : forestgreen }  /* C line comments */
+
 dd+dt { margin-top : 15px }
+
+dl.issue-list dd { margin-top : 15px ; margin-bottom : 15px }
+
+dl.legende { margin-left : 20px }
+
+dl.legende dd+dt  { margin-top : 0px; margin-bottom : 0px }
+
+
+figcaption { 
+	font-family : "Times New Roman", serif ;
+	font-style : italic ;
+	color : darkgrey ;
+	}
 
 h1, h2, h3, h4, h5 { 
 	color : navy ;
@@ -19,16 +59,21 @@ h1, h2, h3, h4, h5 {
 	line-height : 120% ;
 	}
 
+hi { color : darkorange } /* Text hightlight */
+
 li {
 	margin-top : 5px ;
 	margin-bottom : 5px ;
 	}
 
+li[con] { list-style-type : "\2296\2003" }
+li[pro] {	list-style-type: "\2295\2003" }
+
 pre { 
 	border : 1px solid silver ; 
 	padding : 10px 10px ;
-	font-family : "Courier New", Courier, monospace ;
-	font-size : 80% ;
+	font-family : "Lucida Console", "Courier New", Courier, monospace ;
+	font-size : 75% ;
 	line-height : 120% ;
 	overflow-x : auto ;
 	}
