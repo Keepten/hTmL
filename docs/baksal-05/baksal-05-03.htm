@@ -35,6 +35,16 @@
 
 <p>In der oberen Hälfte befindet sich das Spielfeld, symbolisiert durch 5 x 5 Kreise. Die Eckpositionen sind zu Spielbeginn bereits durch Löwen besetzt. In der unteren Hälfte sind 20 weitere Kreise für die Ziegen, die auf das Spielfeld gesetzt werden müssen. Die Tiere werden durch Buchstaben symbolisert. Ihre Bewegungsmöglichkeiten sind durch die Spielregeln eingeschränkt.</p>
 
+<p>SVG kennt keine visuellen Container. Es gibt zwar ein Gruppenelement (G), aber G führt lediglich ein lokales Koordinatensystem für die enthaltenen Child-Element ein, ermöglicht also eine gemeinsame <em>Positionierung</em> einer Gruppe von Elementen. Die Anordnung von Elementen auf der Z-Achse hingegen wird durch die <em>Position in der Datei</em> bestimmt. Weiter oben liegende Elemente werden von weiter unten liegenden Elementen verdeckt.</p>
+
+<p>Das hat Auswirkungen auf die Reihenfolge der Elemente für das Spielbrett:</p>
+
+<ol>
+<li>Linien (für Wege zwischen Spielbrettfeldern)</li>
+<li>Kreise (für die Spielbrettfelder)</li>
+<li>Texte (für die Spielfiguren)</li>
+</ol>
+
 <!--h2--></div>
 
 <h2>Der SVG-Code</h2><div>
