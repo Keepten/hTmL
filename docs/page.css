@@ -29,7 +29,8 @@
 	}
 	
 body { 
-	font-family: Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif ; 
+	font-family: 'Segoe UI', 'Trebuchet MS', 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif ; 
+	font-size : 105% ;
 	line-height : 150% ;
 	padding-left : 40px ;
 	padding-right : 20px ;
@@ -73,8 +74,8 @@ pre {
 	border : 1px solid silver ; 
 	padding : 10px 10px ;
 	font-family : "Lucida Console", "Courier New", Courier, monospace ;
-	font-size : 75% ;
-	line-height : 120% ;
+	font-size : 65% ;
+	line-height : 175% ;
 	overflow-x : auto ;
 	}
 
