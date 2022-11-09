@@ -42,7 +42,7 @@
 
 <p>Wie wir bereits vorher festgestellt haben, haben die Style Rules in <tt>page.css</tt> <em>keinen</em> Einfluss auf die Element in <tt>image.svg</tt>, deshalb auch die unterbrochene Linie von page.css auf image.svg. Daher muss <tt>image.svg</tt> sein eigenes Stylesheet <tt>image.css</tt> einbinden. Was aber natürlich möglich ist, dass <tt>page.htm</tt> und <tt>image.svg</tt> beide <em>das gleiche</em> Style Sheet einbinden. Damit kann man sicherstellen, dass SVG-Elemente in beiden Dateien gleich aussehen. Aber das nur am Rande.</p>
 
-<p>In den folgenden Abschnitten wollen wir die untersuchen, welche <em>Interaktionsmöglichkeiten</em> zwischen Stylesheets und Scripten auf der einen Seite, und der SVG-Grafik <tt>image.svg</tt> auf der anderen Seite bestehen. 
+<p>In den folgenden Abschnitten wollen wir die untersuchen, welche <em>Interaktionsmöglichkeiten</em> zwischen Stylesheets und Scripten auf der einen Seite, und der SVG-Grafik <tt>image.svg</tt> auf der anderen Seite bestehen.</p>
 
 <h2>1 Einbindung Externer Stylesheets in SVG</h2><div>
 
@@ -190,22 +190,22 @@ circle.addEventListener( "click", function() {
 
 <script>
 (function() {  // IIFE
-	// Referenz auf as Ausgabe-Panel ermitteln
-	const panel = document.getElementById( "output-panel-02" );
-	// Load Event Handler beim OBJECT-Element registrieren
-	const o = document.getElementById( "obj-02" );
-	o.addEventListener( "load", function() {
-		// SVG-Document und CIRCLE Element ermitteln
-		const c = o.getSVGDocument().getElementById( "circle-01" );
-		// Kontrollausgabe
-		panel.innerHTML = c.toString() + "<br/>";
-		// Klick-Eventhandler beim CIRCLE-Element registrieren
-		c.addEventListener( "click", function() {
-			// Jeder Klick macht macht eine Ausgabe in das Panel
-			panel.innerHTML += "Klick!<br/>"
-			} ) ;
-		} ) ;
-	} ) ( ) ;  // Call the function above
+    // Referenz auf as Ausgabe-Panel ermitteln
+    const panel = document.getElementById( "output-panel-02" );
+    // Load Event Handler beim OBJECT-Element registrieren
+    const o = document.getElementById( "obj-02" );
+    o.addEventListener( "load", function() {
+        // SVG-Document und CIRCLE Element ermitteln
+        const c = o.getSVGDocument().getElementById( "circle-01" );
+        // Kontrollausgabe
+        panel.innerHTML = c.toString() + "<br/>";
+        // Klick-Eventhandler beim CIRCLE-Element registrieren
+        c.addEventListener( "click", function() {
+            // Jeder Klick macht macht eine Ausgabe in das Panel
+            panel.innerHTML += "Klick!<br/>"
+            } ) ;
+        } ) ;
+    } ) ( ) ;  // Call the function above
 </script>
 
 <p>Wenn das obige Panel den Text "[object SVGCircleElement]" enthält, kann das Script in diesem Dokument auf den Inhalt des externen SVG-Documentes zugreifen. Ein Klick auf den Kresi ändert die Farbe &mdash; das macht das extere Script "image.js", das vom SVG-Dokument eingebunden wird. Siehe oben. Wird dann noch ein "Klick!"-Text in das Output Panel geschrieben, werden auch Events aus dem SVG-Dokument in dieses HTML-Dokument gesendet.</p>
@@ -215,6 +215,130 @@ circle.addEventListener( "click", function() {
 <p>Fazit: Ein Script in einem HTML-Dokument kann auf den Inhalt eines über ein OBJECT-Element eingebundenens SVG-Dokument lesend und schreibend zugreifen, und Events im SVG-Dokument können im HTML-Wrapper definierte Eventhandler zur Ausführung bringen.</p>
 
 <p>Damit steht dem Entwurf des Spielbretts in SVG nichts mehr im Wege.</p>
+
+<!--h2--></div>
+
+<h2 cbc>4&emsp;Bewegung von Spielfiguren</h2><div>
+
+<p>Wenn ein Tier sich von einem Spielfeld auf ein anderes bewegt, wird effektiv die Position eines TEXT-Elementes verschoben. Ausserdem müssen Feldattribute geändert werden, damit das Spielfeld die zum Tier passende Hintergrundfarbe zeigt.</p>
+
+<p>Hier ist eine lauffähige Demo. Files:</p>
+
+<ul>
+<li><a href="image-08.svg">image-08.svg</a> &mdash; SVG und JavaScript Code</li>
+<li><a href="image-08.css">image-08.css</a> &mdash; CSS Code</li>
+</ul>
+
+<p>Klicke auf das leere Feld, um das Tier dorthin zu bewegen:</p>
+
+<figcaption id="bild-03">Bild 3: Bewegungsstudie.</figcaption>
+<object id="obj-03" data="image-08.svg" type="image/svg+xml" style="border:1px solid silver"></object>
+
+<p>SVG-Dokument und Script Code sind diesmal der Einfachheit halber in einer gemeinsamen Datei untergebracht.</p>
+
+<p>Im ersten Teil wird das SVG Root Element (das SVG document) definiert. Das Start Tag ist in Zeile 2, das zugehörige End-Tag am Ende der Datei.</p>
+
+<p>Ein extenes Stylesheet wird mit einem LINK-Element eingebunden. Dort wird die optische Erscheinung der Grafikelemente definiert.</p>
+
+<pre>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;svg viewBox="-150 -50 300 100" width="300" xmlns="http://www.w3.org/2000/svg"&gt;
+
+&lt;link rel="stylesheet" href="image-08.css" xmlns="http://www.w3.org/1999/xhtml"/&gt;
+
+&lt;circle id="circle-01" class="goat" cx="-50" cy="0" r="15" /&gt;
+&lt;circle id="circle-02" cx="+50" cy="0" r="15" /&gt;
+&lt;text id="goat" x="-50" y="0"&gt;G&lt;/text&gt;
+</pre>
+
+<p>Dann folgen 3 SVG-Elemente, zwei CIRCLEs und ein TEXT. Die Kreise representieren die Spielfelder, das Textelement repräsentiert das Tier.</p>
+
+<p>Dann folgt ein SCRIPT element, das diesmal keine externe Datei referenziert, sondern den JavaScript Code gleich direkt enthält.</p>
+
+<pre>
+&lt;script&gt;
+    <cc>// Store references to the drawing elements</cc>
+const circle1 = document.getElementById( "circle-01" );
+const circle2 = document.getElementById( "circle-02" );
+const goat = document.getElementById( "goat" );
+</pre>
+
+<p>Die ersten Anweisungen initialisiert 3 Variablen im Global Scope. Was nicht so geschickt ist, aber hier nicht weiter stört. Die Variablen enthalten Referenzen auf die SVG-Elemente, mit denen das Script arbeitet.</p>
+
+<p>Weiter unten finden sich zwei Anweisungen, die einen Klick-Event Handler bei den Kreisobjekten registrieren. Der Eventhandler soll die Klicks auf die Kreise abfangen und behandeln. Er enthält also die Bewegungslogik.</p>
+
+<pre>
+    <cc>// Register click event handlers on the circles</cc>
+circle1.addEventListener( "click", circleClickHandler ) ;
+circle2.addEventListener( "click", circleClickHandler ) ;
+&lt;/script&gt;
+&lt;/svg&gt;
+</pre>
+
+<p>Der Vollständigkeit halber seien noch die beiden Closing Tags erwähnt. Sie sind erforderlich, um den Anforderungen der XML-Syntax zu genügen.</p>
+
+<p>Nun zum Event Handler. Der findet sich im Code direkt darüber.</p>
+
+<pre>
+    <cc>// Gameboard field click event handler</cc>
+function circleClickHandler ( ) {
+        <cc>// Retrieve the coordinates of the clicked CIRCLE</cc>
+    const x = this.getAttribute( "cx" );
+    const y = this.getAttribute( "cy" );
+        <cc>// Build a CSS query string to find the circle under the goat</cc>
+    const s = "circle[cx=\"" + goat.getAttribute( "x" ) 
+        + "\"][cy=\"" + goat.getAttribute( "y" ) 
+        + "\"]" ;
+        <cc>// Retrieve a reference to that circle</cc>
+    const other = document.querySelector( s );
+        <cc>// Remove its goat class attribute</cc>
+    other.classList.remove( "goat" );
+        <cc>// Move the goat to the destination field</cc>
+    goat.setAttribute( "x", x );
+    goat.setAttribute( "y", y );
+        <cc>// Add the goat class attribute to the destination field.</cc>
+    this.classList.add( "goat" );
+    }
+</pre>
+
+<p>Eigentlich muss man ja nicht viel dazu erzählen, die Kommentare sprechen für sich selbst. Eventuell erklärungsbedürftig ist die Art, wie die "andere" Kreis ermittelt wird.</p>
+
+<p>Wenn auf einen leeren Kreis geklickt wurde, steht das Tier auf dem anderen Kreis. Das Tier hat Koordinaten, x und y. Der Kreis hat ebenfalls Koordinate, cx und cy. Und die Werte sollten übereinstimmen.</p>
+
+<p>Wir bauen also einen CSS-Selektor zusammen, der Kreise selektiert:</p>
+
+<pre>circle</pre>
+
+<p>Wir suchen aber nach einem bestimmten Kreis an einer bekannten Position. Also ein Kreis mit bekannen Attributen cx und cy:</p>
+
+<pre>circle[cx="..."][cy="..."]</pre>
+
+<p>Da der Selektor ein String ist, braucht er String Delimiter am Anfang und am Ende:</p>
+
+<pre>"circle[cx="..."][cy="..."]"</pre>
+
+<p>Jetzt enthält de String aber schon Anführungszeichen. Damit die nicht als String-Ende interpretiert werden, muss man sie mit einem Backslash escapen:</p>
+
+<pre>const s = "circle[cx=\"...\"][cy=\"...\"]"</pre>
+
+<p>Die Werte für die Koordinaten holen wir uns aus dem SVG TEXT-Element:</p>
+
+<pre>
+const gx = goat.getAttribute( "x" );
+const gy = goat.getAttribute( "y" );
+</pre>
+
+<p>Die bauen wir dann in den Selektor ein:</p>
+
+<pre>"circle[cx=\"" + gx + "\"][cy=\"" + gy + "\"]"</pre>
+
+<p>Fertig. Wenn wir diesen String dann an <tt>querySelector()</tt> übergeben, sollte das Kreiselement unter der Ziege geliefert werden:</p>
+
+<pre>
+  const other = document.querySelector( s );
+</pre>
+
+<p>Eigentlich ganz einfach, wenn man's verstanden hat. Wie immer.</p>
 
 <!--h2--></div>
 

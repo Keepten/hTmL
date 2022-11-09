@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="-150 -50 300 100" width="300" xmlns="http://www.w3.org/2000/svg">
+
+<link rel="stylesheet" href="image-08.css" xmlns="http://www.w3.org/1999/xhtml"/>
+
+<circle id="circle-01" class="goat" cx="-50" cy="0" r="15" />
+<circle id="circle-02" cx="+50" cy="0" r="15" />
+<text id="goat" x="-50" y="0">G</text>
+
+<script>
+	// Store references to the drawing elements
+const circle1 = document.getElementById( "circle-01" );
+const circle2 = document.getElementById( "circle-02" );
+const goat = document.getElementById( "goat" );
+	// Gameboard field click event handler
+function circleClickHandler ( ) {
+		// Retrieve the coordinates of the clicked CIRCLE
+	const x = this.getAttribute( "cx" );
+	const y = this.getAttribute( "cy" );
+		// Build a CSS query string to find the circle under the goat
+	const s = "circle[cx=\"" + goat.getAttribute( "x" ) + "\"][cy=\"" + goat.getAttribute( "y" ) + "\"]" ;
+		// Retrieve a reference to that circle
+	const other = document.querySelector( s );
+		// Remove its goat class attribute
+	other.classList.remove( "goat" );
+		// Move the goat to the destination field
+	goat.setAttribute( "x", x );
+	goat.setAttribute( "y", y );
+		// Add the goat class attribute to the destination field.
+	this.classList.add( "goat" );
+	}
+	
+	// Register click event handlers on the circles
+circle1.addEventListener( "click", circleClickHandler ) ;
+circle2.addEventListener( "click", circleClickHandler ) ;
+</script>
+</svg>

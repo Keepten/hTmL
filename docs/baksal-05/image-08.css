@@ -1,0 +1,20 @@
+/*  spielbrett.css 
+ *  Styles für das Spielbrett
+ */
+
+ .goat { fill : lightgreen ; }
+.lion { fill : lightsalmon ; }
+
+ circle {
+	stroke : grey ;
+	stroke-width : 2px ;
+	fill : white;
+	}
+
+text {
+	text-anchor : middle ;
+	alignment-baseline : central;
+	font-family : Arial, sans-serif ;
+	font-size : 16px ;
+	}
+
