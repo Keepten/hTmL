@@ -3,6 +3,6 @@
 
 <link rel="stylesheet" href="image.css" xmlns="http://www.w3.org/1999/xhtml"/>
 <circle id="circle-01" cx="0" cy="0" r="10" />
-<script href="spielbrett-07.js"></script>
+<script href="image-07.js"></script>
 
 </svg>
